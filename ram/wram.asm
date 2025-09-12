@@ -375,9 +375,10 @@ NEXTU
 wNPCMovementDirections:: ds 180
 
 NEXTU
-wDexRatingNumMonsSeen:: db
-wDexRatingNumMonsOwned:: db
+wDexRatingNumMonsSeen:: dw
+wDexRatingNumMonsOwned:: dw
 wDexRatingText:: db
+wListScrollOffsetDex:: dw
 
 NEXTU
 ; If a random number greater than this value is generated, then the player is
@@ -414,13 +415,30 @@ NEXTU
 wUnusedFlag::
 wBoostExpByExpAll:: db
 
-	ds 59
+wEvosMovesData:: ds 59
+wEvosMovesDataEnd::
 
 wNPCMovementDirections2:: ds 10
 ; used in Pallet Town scripted movement
 wNumStepsToTake:: db
 
-	ds 48
+wOaksAideRequirement:: dw
+wOaksAideNumMonsOwned:: dw
+
+; tile ID of the badge number being drawn
+wBadgeNumberTile:: db
+; first tile ID of the name being drawn
+wBadgeNameTile:: db
+; a list of the first tile IDs of each badge or face (depending on whether the
+; badge is owned) to be drawn on the trainer screen
+; the byte after the list gets read when shifting back one byte
+wBadgeOrFaceTiles:: ds NUM_BADGES + 1
+	ds 1
+; temporary list created when displaying the badges on the trainer screen
+; one byte for each badge; 0 = not obtained, 1 = obtained
+wTempObtainedBadgesBooleans:: ds NUM_BADGES
+
+	ds 24
 
 wRLEByteCount:: db
 
@@ -520,15 +538,15 @@ ENDU
 wMiscBattleDataEnd::
 ENDU
 
-; This union spans 39 bytes.
+; This union spans 40 bytes.
 UNION
-wInGameTradeGiveMonSpecies:: db
+wInGameTradeGiveMonSpecies:: dw
 wInGameTradeTextPointerTablePointer:: dw
 wInGameTradeTextPointerTableIndex:: db
 wInGameTradeGiveMonName:: ds NAME_LENGTH
 wInGameTradeReceiveMonName:: ds NAME_LENGTH
 wInGameTradeMonNick:: ds NAME_LENGTH
-wInGameTradeReceiveMonSpecies:: db
+wInGameTradeReceiveMonSpecies:: dw
 
 NEXTU
 wPlayerMonUnmodifiedLevel:: db
@@ -575,11 +593,9 @@ wEnemyMonStatModsEnd::
 
 NEXTU
 	ds 30
-wEngagedTrainerClass:: db
+wEngagedTrainerClass:: dw
 wEngagedTrainerSet:: db
 ENDU
-
-	ds 1
 
 wNPCMovementDirections2Index::
 wUnusedLinkMenuByte::
@@ -601,9 +617,8 @@ wOverrideSimulatedJoypadStatesMask:: db
 
 ; This union spans 30 bytes.
 UNION
-wTradedPlayerMonSpecies:: db
-wTradedEnemyMonSpecies:: db
-	ds 2
+wTradedPlayerMonSpecies:: dw
+wTradedEnemyMonSpecies:: dw
 wTradedPlayerMonOT:: ds NAME_LENGTH
 wTradedPlayerMonOTID:: dw
 wTradedEnemyMonOT:: ds NAME_LENGTH
@@ -661,7 +676,7 @@ wSSAnneSmokeDriftAmount:: db
 wSSAnneSmokeX:: db
 
 NEXTU
-wHoFMonSpecies::
+wHoFMonSpecies:: dw
 wHoFTeamIndex:: db
 wHoFPartyMonIndex:: db
 wHoFMonLevel:: db
@@ -671,7 +686,7 @@ wHoFTeamIndex2:: db
 wHoFTeamNo:: db
 
 NEXTU
-wRivalStarterTemp:: db
+wRivalStarterTemp:: dw
 wRivalStarterBallSpriteIndex:: db
 
 NEXTU
@@ -788,20 +803,6 @@ wOptionsBattleStyleCursorX:: db
 wOptionsCancelCursorX:: db
 
 NEXTU
-; tile ID of the badge number being drawn
-wBadgeNumberTile:: db
-; first tile ID of the name being drawn
-wBadgeNameTile:: db
-; a list of the first tile IDs of each badge or face (depending on whether the
-; badge is owned) to be drawn on the trainer screen
-; the byte after the list gets read when shifting back one byte
-wBadgeOrFaceTiles:: ds NUM_BADGES + 1
-	ds 1
-; temporary list created when displaying the badges on the trainer screen
-; one byte for each badge; 0 = not obtained, 1 = obtained
-wTempObtainedBadgesBooleans:: ds NUM_BADGES
-
-NEXTU
 wUnusedCreditsByte:: db
 ; the number of credits mons that have been displayed so far
 wNumCreditsMonsDisplayed:: db
@@ -829,16 +830,19 @@ NEXTU
 wChangeBoxSavedMapTextPointer:: dw
 
 NEXTU
+wDexMaxSeenMon::
+wTitleMonSpecies::
+	dw
+
+NEXTU
 wSavedY::
 wTempSCX::
 ; which entry from TradeMons to select
 wWhichTrade::
-wDexMaxSeenMon::
 wPPRestoreItem::
 wWereAnyMonsAsleep::
 wNumShakes::
 wWhichBadge::
-wTitleMonSpecies::
 wPlayerCharacterOAMTile::
 ; the number of small stars OAM entries to move down
 wMoveDownSmallStarsOAMCount::
@@ -861,17 +865,17 @@ wGymTrashCanIndex:: db
 
 wSymmetricSpriteOAMAttributes:: db
 
-wMonPartySpriteSpecies:: db
+wMonPartySpriteSpecies:: dw
 
 ; in the trade animation, the mon that leaves the left gameboy
-wLeftGBMonSpecies:: db
+wLeftGBMonSpecies:: dw
 
 ; in the trade animation, the mon that leaves the right gameboy
-wRightGBMonSpecies:: db
+wRightGBMonSpecies:: dw
 
 wMiscFlags:: db
 
-	ds 9
+	ds 6
 
 ; This has overlapping related uses.
 ; When the player tries to use an item or use certain field moves, 0 is stored
@@ -910,7 +914,7 @@ wPayDayMoney:: ds 3
 
 NEXTU
 ; evolution data for one mon
-wEvoDataBuffer:: ds NUM_EVOS_IN_BUFFER * 4 + 1 ; enough for Eevee's three 4-byte evolutions and 0 terminator
+wEvoDataBuffer:: ds NUM_EVOS_IN_BUFFER * 5 + 1 ; enough for Eevee's three 5-byte evolutions and 0 terminator
 wEvoDataBufferEnd::
 
 NEXTU
@@ -936,8 +940,6 @@ UNION
 wBuffer:: ds 30
 
 NEXTU
-wEvoOldSpecies:: db
-wEvoNewSpecies:: db
 wEvoMonTileOffset:: db
 wEvoCancelled:: db
 
@@ -950,10 +952,6 @@ wNamingScreenSubmitName:: db
 wAlphabetCase:: db
 	ds 1
 wNamingScreenLetter:: db
-
-NEXTU
-wChangeMonPicEnemyTurnSpecies:: db
-wChangeMonPicPlayerTurnSpecies:: db
 
 NEXTU
 wHPBarMaxHP:: dw
@@ -1048,7 +1046,7 @@ wPlayerHPBarColor:: db
 
 NEXTU
 ; species of the mon whose palette is used for the whole screen
-wWholeScreenPaletteMonSpecies:: db
+wWholeScreenPaletteMonSpecies:: dw
 ENDU
 
 wEnemyHPBarColor:: db
@@ -1060,7 +1058,7 @@ wPartyMenuHPBarColors:: ds PARTY_LENGTH
 
 wStatusScreenHPBarColor:: db
 
-	ds 7
+	ds 6
 
 wCopyingSGBTileData::
 wWhichPartyMenuHPBar::
@@ -1096,10 +1094,13 @@ wUnusedNamePointer:: dw
 
 wItemPrices:: dw
 
+UNION
 wCurPartySpecies::
-wCurItem::
 wCurListMenuItem::
-	db
+	dw
+NEXTU
+wCurItem:: db
+ENDU
 
 ; which pokemon you selected
 wWhichPokemon:: db
@@ -1188,8 +1189,8 @@ wPlayerMoveType:: db
 wPlayerMoveAccuracy:: db
 wPlayerMoveMaxPP:: db
 
-wEnemyMonSpecies2:: db
-wBattleMonSpecies2:: db
+wEnemyMonSpecies2:: dw
+wBattleMonSpecies2:: dw
 
 wEnemyMonNick:: ds NAME_LENGTH
 
@@ -1243,8 +1244,8 @@ wIsInBattle:: db
 wPartyGainExpFlags:: flag_array PARTY_LENGTH
 
 ; in a wild battle, this is the species of pokemon
-; in a trainer battle, this is the trainer class + OPP_ID_OFFSET
-wCurOpponent:: db
+; in a trainer battle, this is the trainer class
+wCurOpponent:: dw
 
 ; in normal battle, this is 0
 ; in old man battle, this is 1
@@ -1514,18 +1515,21 @@ wSpriteDecodeTable0Ptr:: dw
 ; pointer to differential decoding table (assuming initial value 1)
 wSpriteDecodeTable1Ptr:: dw
 
+UNION
 ; input for GetMonHeader
-wCurSpecies::
+wCurSpecies:: dw
+NEXTU
 ; input for GetName
-wNameListIndex:: db
+wNameListIndex:: dw
 wNameListType:: db
+ENDU
 
 wPredefBank:: db
 
 wMonHeader::
 ; In the ROM base stats data structure, this is the dex number, but it is
 ; overwritten with the internal index number after the header is copied to WRAM.
-wMonHIndex:: db
+wMonHIndex:: dw
 wMonHBaseStats::
 wMonHBaseHP:: db
 wMonHBaseAttack:: db
@@ -1543,7 +1547,7 @@ wMonHBackSprite:: dw
 wMonHMoves:: ds NUM_MOVES
 wMonHGrowthRate:: db
 wMonHLearnset:: flag_array NUM_TMS + NUM_HMS
-	ds 1
+wMonHSpritesBank:: db
 wMonHeaderEnd::
 
 ; saved at the start of a battle and then written back at the end of the battle
@@ -1574,7 +1578,7 @@ wWalkBikeSurfStateCopy:: db
 wInitListType:: db
 
 ; 0 if no mon was captured
-wCapturedMonSpecies:: db
+wCapturedMonSpecies:: dw
 
 ; Non-zero when the first player mon and enemy mon haven't been sent out yet.
 ; It prevents the game from asking if the player wants to choose another mon
@@ -1583,12 +1587,15 @@ wCapturedMonSpecies:: db
 ; which will be the first mon sent out.
 wFirstMonsNotOutYet:: db
 
+UNION
 wNamedObjectIndex::
-wTempByteValue::
 wNumSetBits::
+wPokedexNum::
+	dw
+NEXTU
+wTempByteValue::
 wTypeEffectiveness::
 wMoveType::
-wPokedexNum::
 wTempTMHM::
 wUsingPPUp::
 wMaxPP::
@@ -1600,6 +1607,7 @@ wPokeBallCaptureCalcTemp::
 ; upper nybble: number of animations to play
 wPokeBallAnimData::
 	db
+ENDU
 
 ; When this value is non-zero, the player isn't allowed to exit the party menu
 ; by pressing B and not choosing a mon.
@@ -1678,9 +1686,9 @@ wStepCounter:: db
 ; after a battle, you have at least 3 steps before a random battle can occur
 wNumberOfNoRandomBattleStepsLeft:: db
 
-wPrize1:: db
-wPrize2:: db
-wPrize3:: db
+wPrize1:: dw
+wPrize2:: dw
+wPrize3:: dw
 
 	ds 1
 
@@ -1722,7 +1730,7 @@ SECTION "Party Data", WRAM0
 wPartyDataStart::
 
 wPartyCount:: db
-wPartySpecies:: ds PARTY_LENGTH + 1
+wPartySpecies:: ds PARTY_LENGTH * 2 + 1
 
 wPartyMons::
 ; wPartyMon1 - wPartyMon6
@@ -1833,7 +1841,7 @@ wWarpEntries:: ds MAX_WARP_EVENTS * 4 ; Y, X, warp ID, map ID
 ; if $ff, the player's coordinates are not updated when entering the map
 wDestinationWarpID:: db
 
-	ds 128
+	ds 87
 
 ; number of signs in the current map (up to MAX_BG_EVENTS)
 wNumSigns:: db
@@ -1850,7 +1858,7 @@ wYOffsetSinceLastSpecialWarp:: db
 wXOffsetSinceLastSpecialWarp:: db
 
 wMapSpriteData:: ds MAX_OBJECT_EVENTS * 2 ; movement byte 2, text ID
-wMapSpriteExtraData:: ds MAX_OBJECT_EVENTS * 2 ; trainer class/item ID, trainer set ID
+wMapSpriteExtraData:: ds MAX_OBJECT_EVENTS * 3 ; trainer class/item ID, trainer set ID
 
 ; map height in 2x2 meta-tiles
 wCurrentMapHeight2:: db
@@ -2064,20 +2072,16 @@ wSafariSteps:: dw
 ; item given to cinnabar lab
 wFossilItem:: db
 ; mon that will result from the item
-wFossilMon:: db
+wFossilMon:: dw
 
-	ds 2
-
-; trainer classes start at OPP_ID_OFFSET
-wEnemyMonOrTrainerClass:: db
+; trainer classes have their high byte as $ff
+wEnemyMonOrTrainerClass:: dw
 
 wPlayerJumpingYScreenCoordsIndex:: db
 
-wRivalStarter:: db
+wRivalStarter:: dw
 
-	ds 1
-
-wPlayerStarter:: db
+wPlayerStarter:: dw
 
 ; sprite index of the boulder the player is trying to push
 wBoulderSpriteIndex:: db
@@ -2147,8 +2151,6 @@ UNION
 wGrassRate:: db
 wGrassMons:: ds WILDDATA_LENGTH - 1
 
-	ds 8
-
 wWaterRate:: db
 wWaterMons:: ds WILDDATA_LENGTH - 1
 
@@ -2160,10 +2162,10 @@ wLinkEnemyTrainerName:: ds NAME_LENGTH
 
 wSerialEnemyDataBlock:: ; ds $1a8
 
-	ds 9
+	ds 3
 
 wEnemyPartyCount:: db
-wEnemyPartySpecies:: ds PARTY_LENGTH + 1
+wEnemyPartySpecies:: ds PARTY_LENGTH * 2 + 1
 
 wEnemyMons::
 ; wEnemyMon1 - wEnemyMon6
@@ -2198,7 +2200,15 @@ wOpponentAfterWrongAnswer:: db
 ; mostly copied from map-specific map script pointer and written back later
 wCurMapScript:: db
 
-	ds 7
+UNION
+wEvoOldSpecies:: dw
+wEvoNewSpecies:: dw
+NEXTU
+wChangeMonPicEnemyTurnSpecies:: dw
+wChangeMonPicPlayerTurnSpecies:: dw
+ENDU
+
+	ds 3
 
 wPlayTimeHours:: db
 wPlayTimeMaxed:: db
@@ -2228,7 +2238,7 @@ SECTION "Current Box Data", WRAM0
 wBoxDataStart::
 
 wBoxCount:: db
-wBoxSpecies:: ds MONS_PER_BOX + 1
+wBoxSpecies:: ds MONS_PER_BOX + 2
 
 wBoxMons::
 ; wBoxMon1 - wBoxMon20

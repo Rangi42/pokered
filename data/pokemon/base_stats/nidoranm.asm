@@ -1,4 +1,5 @@
-	db DEX_NIDORAN_M ; pokedex id
+NidoranMBaseStats::
+	dw DEX_NIDORAN_M ; pokedex id
 
 	db  46,  57,  40,  50,  40
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(NidoranMPicFront)
+	assert BANK(NidoranMPicFront) == BANK(NidoranMPicBack)

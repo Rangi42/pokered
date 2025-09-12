@@ -1,4 +1,5 @@
-	db DEX_BELLSPROUT ; pokedex id
+BellsproutBaseStats::
+	dw DEX_BELLSPROUT ; pokedex id
 
 	db  50,  75,  35,  40,  70
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     BIDE,         REST,         SUBSTITUTE,   CUT
 	; end
 
-	db 0 ; padding
+	db BANK(BellsproutPicFront)
+	assert BANK(BellsproutPicFront) == BANK(BellsproutPicBack)

@@ -192,10 +192,15 @@ OaksLabPlayerForcedToWalkBackScript:
 	ret
 
 OaksLabChoseStarterScript:
+	ld a, [wPlayerStarter + 1]
+	ld b, a
 	ld a, [wPlayerStarter]
-	cp STARTER1
+	ld c, a
+	ld de, STARTER1
+	call CompareTwoBytes
 	jr z, .Charmander
-	cp STARTER2
+	ld de, STARTER1
+	call CompareTwoBytes
 	jr z, .Squirtle
 	jr .Bulbasaur
 .Charmander
@@ -323,6 +328,10 @@ OaksLabRivalChoosesStarterScript:
 	ld [wRivalStarter], a
 	ld [wCurPartySpecies], a
 	ld [wNamedObjectIndex], a
+	ld a, [wRivalStarterTemp + 1]
+	ld [wRivalStarter + 1], a
+	ld [wCurPartySpecies + 1], a
+	ld [wNamedObjectIndex + 1], a
 	call GetMonName
 	ld a, OAKSLAB_RIVAL
 	ldh [hSpriteIndex], a
@@ -382,15 +391,22 @@ OaksLabRivalStartBattleScript:
 	ret nz
 
 	; define which team rival uses, and fight it
-	ld a, OPP_RIVAL1
+	ld a, RIVAL1
 	ld [wCurOpponent], a
+	ld a, $ff
+	ld [wCurOpponent + 1], a
+	ld a, [wRivalStarter + 1]
+	ld b, a
 	ld a, [wRivalStarter]
-	cp STARTER2
+	ld c, a
+	ld de, STARTER2
+	call CompareTwoBytes
 	jr nz, .not_squirtle
 	ld a, $1
 	jr .done
 .not_squirtle
-	cp STARTER3
+	ld de, STARTER3
+	call CompareTwoBytes
 	jr nz, .not_bulbasaur
 	ld a, $2
 	jr .done
@@ -796,36 +812,46 @@ OaksLabRivalText:
 
 OaksLabCharmanderPokeBallText:
 	text_asm
-	ld a, STARTER2
+	ld a, LOW(STARTER2)
 	ld [wRivalStarterTemp], a
+	ld a, HIGH(STARTER2)
+	ld [wRivalStarterTemp + 1], a
 	ld a, OAKSLAB_SQUIRTLE_POKE_BALL
 	ld [wRivalStarterBallSpriteIndex], a
-	ld a, STARTER1
+	ld de, STARTER1
 	ld b, OAKSLAB_CHARMANDER_POKE_BALL
 	jr OaksLabSelectedPokeBallScript
 
 OaksLabSquirtlePokeBallText:
 	text_asm
-	ld a, STARTER3
+	ld a, LOW(STARTER3)
 	ld [wRivalStarterTemp], a
+	ld a, HIGH(STARTER3)
+	ld [wRivalStarterTemp + 1], a
 	ld a, OAKSLAB_BULBASAUR_POKE_BALL
 	ld [wRivalStarterBallSpriteIndex], a
-	ld a, STARTER2
+	ld de, STARTER2
 	ld b, OAKSLAB_SQUIRTLE_POKE_BALL
 	jr OaksLabSelectedPokeBallScript
 
 OaksLabBulbasaurPokeBallText:
 	text_asm
-	ld a, STARTER1
+	ld a, LOW(STARTER1)
 	ld [wRivalStarterTemp], a
+	ld a, HIGH(STARTER1)
+	ld [wRivalStarterTemp + 1], a
 	ld a, OAKSLAB_CHARMANDER_POKE_BALL
 	ld [wRivalStarterBallSpriteIndex], a
-	ld a, STARTER3
+	ld de, STARTER3
 	ld b, OAKSLAB_BULBASAUR_POKE_BALL
 
 OaksLabSelectedPokeBallScript:
+	ld a, e
 	ld [wCurPartySpecies], a
 	ld [wPokedexNum], a
+	ld a, d
+	ld [wCurPartySpecies + 1], a
+	ld [wPokedexNum + 1], a
 	ld a, b
 	ld [wSpriteIndex], a
 	CheckEvent EVENT_GOT_STARTER
@@ -900,6 +926,9 @@ OaksLabMonChoiceMenu:
 	ld a, [wCurPartySpecies]
 	ld [wPlayerStarter], a
 	ld [wNamedObjectIndex], a
+	ld a, [wCurPartySpecies + 1]
+	ld [wPlayerStarter + 1], a
+	ld [wNamedObjectIndex + 1], a
 	call GetMonName
 	ld a, [wSpriteIndex]
 	cp OAKSLAB_CHARMANDER_POKE_BALL
@@ -928,6 +957,8 @@ OaksLabMonChoiceMenu:
 	ld [wCurEnemyLevel], a
 	ld a, [wCurPartySpecies]
 	ld [wPokedexNum], a
+	ld a, [wCurPartySpecies + 1]
+	ld [wPokedexNum + 1], a
 	call AddPartyMon
 	ld hl, wStatusFlags4
 	set BIT_GOT_STARTER, [hl]
@@ -969,9 +1000,14 @@ OaksLabOak1Text:
 	ld hl, wPokedexOwned
 	ld b, wPokedexOwnedEnd - wPokedexOwned
 	call CountSetBits
-	ld a, [wNumSetBits]
-	cp 2
+	ld a, [wNumSetBits + 1]
+	cp HIGH(2)
 	jr c, .check_for_poke_balls
+	jr nz, .check_for_pokedex
+	ld a, [wNumSetBits]
+	cp LOW(2)
+	jr c, .check_for_poke_balls
+.check_for_pokedex
 	CheckEvent EVENT_GOT_POKEDEX
 	jr z, .check_for_poke_balls
 .already_got_poke_balls

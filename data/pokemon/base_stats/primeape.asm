@@ -1,4 +1,5 @@
-	db DEX_PRIMEAPE ; pokedex id
+PrimeapeBaseStats::
+	dw DEX_PRIMEAPE ; pokedex id
 
 	db  65, 105,  60,  95,  60
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     SKULL_BASH,   REST,         ROCK_SLIDE,   SUBSTITUTE,   STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(PrimeapePicFront)
+	assert BANK(PrimeapePicFront) == BANK(PrimeapePicBack)

@@ -1,4 +1,5 @@
-	db DEX_BULBASAUR ; pokedex id
+BulbasaurBaseStats::
+	dw DEX_BULBASAUR ; pokedex id
 
 	db  45,  49,  49,  45,  65
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     REFLECT,      BIDE,         REST,         SUBSTITUTE,   CUT
 	; end
 
-	db 0 ; padding
+	db BANK(BulbasaurPicFront)
+	assert BANK(BulbasaurPicFront) == BANK(BulbasaurPicBack)

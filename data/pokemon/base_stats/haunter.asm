@@ -1,4 +1,5 @@
-	db DEX_HAUNTER ; pokedex id
+HaunterBaseStats::
+	dw DEX_HAUNTER ; pokedex id
 
 	db  45,  50,  45,  95, 115
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     DREAM_EATER,  REST,         PSYWAVE,      EXPLOSION,    SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(HaunterPicFront)
+	assert BANK(HaunterPicFront) == BANK(HaunterPicBack)

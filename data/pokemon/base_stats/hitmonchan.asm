@@ -1,4 +1,5 @@
-	db DEX_HITMONCHAN ; pokedex id
+HitmonchanBaseStats::
+	dw DEX_HITMONCHAN ; pokedex id
 
 	db  50, 105,  79,  76,  35
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SKULL_BASH,   REST,         SUBSTITUTE,   STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(HitmonchanPicFront)
+	assert BANK(HitmonchanPicFront) == BANK(HitmonchanPicBack)

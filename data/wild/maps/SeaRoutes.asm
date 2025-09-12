@@ -3,14 +3,14 @@ SeaRoutesWildMons:
 	end_grass_wildmons
 
 	def_water_wildmons 5 ; encounter rate
-	db  5, TENTACOOL
-	db 10, TENTACOOL
-	db 15, TENTACOOL
-	db  5, TENTACOOL
-	db 10, TENTACOOL
-	db 15, TENTACOOL
-	db 20, TENTACOOL
-	db 30, TENTACOOL
-	db 35, TENTACOOL
-	db 40, TENTACOOL
+	dbw  5, TENTACOOL
+	dbw 10, TENTACOOL
+	dbw 15, TENTACOOL
+	dbw  5, TENTACOOL
+	dbw 10, TENTACOOL
+	dbw 15, TENTACOOL
+	dbw 20, TENTACOOL
+	dbw 30, TENTACOOL
+	dbw 35, TENTACOOL
+	dbw 40, TENTACOOL
 	end_water_wildmons

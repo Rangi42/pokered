@@ -13,15 +13,21 @@ ENDM
 ;\7 items only: item id
 ;\7 trainers only: trainer class/pokemon id
 ;\8 trainers only: trainer number/pokemon level
+;\9 pokemon only: dummy `pokemon` to increase _NARG
 MACRO object_event
 	db \3
 	db \2 + 4
 	db \1 + 4
 	db \4
 	db \5
-	IF _NARG > 7
+	IF _NARG > 8
+		ASSERT !STRCMP("\9", "pokemon")
 		db TRAINER | \6
-		db \7
+		dw \7
+		db \8
+	ELIF _NARG > 7
+		db TRAINER | \6
+		db \7, $ff
 		db \8
 	ELIF _NARG > 6
 		db ITEM | \6

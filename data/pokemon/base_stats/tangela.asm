@@ -1,4 +1,5 @@
-	db DEX_TANGELA ; pokedex id
+TangelaBaseStats::
+	dw DEX_TANGELA ; pokedex id
 
 	db  65,  55, 115,  60, 100
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     CUT
 	; end
 
-	db 0 ; padding
+	db BANK(TangelaPicFront)
+	assert BANK(TangelaPicFront) == BANK(TangelaPicBack)

@@ -1,4 +1,5 @@
-	db DEX_SPEAROW ; pokedex id
+SpearowBaseStats::
+	dw DEX_SPEAROW ; pokedex id
 
 	db  40,  60,  30,  70,  31
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     SKY_ATTACK,   REST,         SUBSTITUTE,   FLY
 	; end
 
-	db 0 ; padding
+	db BANK(SpearowPicFront)
+	assert BANK(SpearowPicFront) == BANK(SpearowPicBack)
