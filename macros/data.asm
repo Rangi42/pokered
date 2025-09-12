@@ -65,7 +65,10 @@ MACRO dc ; "crumbs"
 ENDM
 
 MACRO bigdw ; big-endian word
-	db HIGH(\1), LOW(\1)
+	REPT _NARG
+		db HIGH(\1), LOW(\1)
+		SHIFT
+	ENDR
 ENDM
 
 MACRO dba ; dbw bank, address

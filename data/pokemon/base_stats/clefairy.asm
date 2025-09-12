@@ -1,4 +1,5 @@
-	db DEX_CLEFAIRY ; pokedex id
+ClefairyBaseStats::
+	dw DEX_CLEFAIRY ; pokedex id
 
 	db  70,  45,  48,  35,  60
 	;   hp  atk  def  spd  spc
@@ -23,4 +24,5 @@
 	     SUBSTITUTE,   STRENGTH,     FLASH
 	; end
 
-	db 0 ; padding
+	db BANK(ClefairyPicFront)
+	assert BANK(ClefairyPicFront) == BANK(ClefairyPicBack)

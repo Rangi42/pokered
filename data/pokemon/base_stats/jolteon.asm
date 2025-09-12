@@ -1,4 +1,5 @@
-	db DEX_JOLTEON ; pokedex id
+JolteonBaseStats::
+	dw DEX_JOLTEON ; pokedex id
 
 	db  65,  65,  60, 130, 110
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     THUNDER_WAVE, SUBSTITUTE,   FLASH
 	; end
 
-	db 0 ; padding
+	db BANK(JolteonPicFront)
+	assert BANK(JolteonPicFront) == BANK(JolteonPicBack)

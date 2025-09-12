@@ -141,6 +141,9 @@ StatusScreen:
 	ld a, [wMonHIndex]
 	ld [wPokedexNum], a
 	ld [wCurSpecies], a
+	ld a, [wMonHIndex + 1]
+	ld [wPokedexNum + 1], a
+	ld [wCurSpecies + 1], a
 	predef IndexToPokedex
 	hlcoord 3, 7
 	ld de, wPokedexNum
@@ -171,6 +174,9 @@ StatusScreen:
 	hlcoord 1, 0
 	call LoadFlippedFrontSpriteByMonIndex ; draw Pokémon picture
 	ld a, [wCurPartySpecies]
+	ld c, a
+	ld a, [wCurPartySpecies + 1]
+	ld b, a
 	call PlayCry
 	call WaitForTextScrollButtonPress
 	pop af
@@ -421,6 +427,8 @@ StatusScreen2:
 	call StatusScreen_ClearName
 	ld a, [wMonHIndex]
 	ld [wNamedObjectIndex], a
+	ld a, [wMonHIndex + 1]
+	ld [wNamedObjectIndex + 1], a
 	call GetMonName
 	hlcoord 9, 1
 	call PlaceString

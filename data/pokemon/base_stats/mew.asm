@@ -1,4 +1,5 @@
-	db DEX_MEW ; pokedex id
+MewBaseStats::
+	dw DEX_MEW ; pokedex id
 
 	db 100, 100, 100, 100, 100
 	;   hp  atk  def  spd  spc
@@ -28,4 +29,5 @@
 	     UNUSED
 	; end
 
-	db %11111111 ; padding
+	db BANK(MewPicFront)
+	assert BANK(MewPicFront) == BANK(MewPicBack)
