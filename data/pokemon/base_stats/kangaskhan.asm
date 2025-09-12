@@ -1,4 +1,5 @@
-	db DEX_KANGASKHAN ; pokedex id
+KangaskhanBaseStats::
+	dw DEX_KANGASKHAN ; pokedex id
 
 	db 105,  95,  80,  90,  40
 	;   hp  atk  def  spd  spc
@@ -22,4 +23,5 @@
 	     ROCK_SLIDE,   SUBSTITUTE,   SURF,         STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(KangaskhanPicFront)
+	assert BANK(KangaskhanPicFront) == BANK(KangaskhanPicBack)

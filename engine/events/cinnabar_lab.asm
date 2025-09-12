@@ -40,17 +40,19 @@ GiveFossilToCinnabarLab::
 	jr z, .choseDomeFossil
 	cp HELIX_FOSSIL
 	jr z, .choseHelixFossil
-	ld b, AERODACTYL
+	ld de, AERODACTYL
 	jr .fossilSelected
 .choseHelixFossil
-	ld b, OMANYTE
+	ld de, OMANYTE
 	jr .fossilSelected
 .choseDomeFossil
-	ld b, KABUTO
+	ld de, KABUTO
 .fossilSelected
 	ld [wFossilItem], a
-	ld a, b
+	ld a, e
 	ld [wFossilMon], a
+	ld a, d
+	ld [wFossilMon + 1], a
 	call LoadFossilItemAndMonName
 	ld hl, .ScientistSeesFossilText
 	call PrintText
@@ -115,6 +117,8 @@ PrintFossilsInBag:
 LoadFossilItemAndMonName::
 	ld a, [wFossilMon]
 	ld [wNamedObjectIndex], a
+	ld a, [wFossilMon + 1]
+	ld [wNamedObjectIndex + 1], a
 	call GetMonName
 	call CopyToStringBuffer
 	ld a, [wFossilItem]

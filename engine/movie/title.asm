@@ -124,12 +124,15 @@ DisplayTitleScreen:
 	call EnableLCD
 
 IF DEF(_RED)
-	ld a, STARTER1 ; which Pokemon to show first on the title screen
+	ld bc, STARTER1 ; which Pokemon to show first on the title screen
 ENDC
 IF DEF(_BLUE)
-	ld a, STARTER2 ; which Pokemon to show first on the title screen
+	ld bc, STARTER2 ; which Pokemon to show first on the title screen
 ENDC
+	ld a, c
 	ld [wTitleMonSpecies], a
+	ld a, b
+	ld [wTitleMonSpecies + 1], a
 	call LoadTitleMonSprite
 
 	ld a, HIGH(vBGMap0 + $300)
@@ -238,6 +241,9 @@ ENDC
 
 .finishedWaiting
 	ld a, [wTitleMonSpecies]
+	ld c, a
+	ld a, [wTitleMonSpecies + 1]
+	ld b, a
 	call PlayCry
 	call WaitForSoundToFinish
 	call GBPalWhiteOutWithDelay3
@@ -276,17 +282,27 @@ TitleScreenPickNewMon:
 ; Keep looping until a mon different from the current one is picked.
 	call Random
 	and $f
+	add a
 	ld c, a
 	ld b, 0
 	ld hl, TitleMons
 	add hl, bc
+	ld a, [hli]
+	ld c, a
 	ld a, [hl]
+	ld b, a
 	ld hl, wTitleMonSpecies
 
 ; Can't be the same as before.
+	ld a, c
+	cp [hl]
+	jr nz, .done
+	ld a, b
+	inc hl
 	cp [hl]
 	jr z, .loop
 
+.done
 	ld [hl], a
 	call LoadTitleMonSprite
 
@@ -362,8 +378,12 @@ ClearBothBGMaps:
 	jp FillMemory
 
 LoadTitleMonSprite:
+	ld a, c
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
+	ld a, b
+	ld [wCurPartySpecies + 1], a
+	ld [wCurSpecies + 1], a
 	hlcoord 5, 10
 	call GetMonHeader
 	jp LoadFrontSpriteByMonIndex

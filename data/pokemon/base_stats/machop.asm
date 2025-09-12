@@ -1,4 +1,5 @@
-	db DEX_MACHOP ; pokedex id
+MachopBaseStats::
+	dw DEX_MACHOP ; pokedex id
 
 	db  70,  80,  50,  35,  35
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     ROCK_SLIDE,   SUBSTITUTE,   STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(MachopPicFront)
+	assert BANK(MachopPicFront) == BANK(MachopPicBack)

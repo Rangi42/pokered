@@ -1,4 +1,5 @@
-	db DEX_POLIWRATH ; pokedex id
+PoliwrathBaseStats::
+	dw DEX_POLIWRATH ; pokedex id
 
 	db  90,  85,  95,  70,  70
 	;   hp  atk  def  spd  spc
@@ -22,4 +23,5 @@
 	     SUBSTITUTE,   SURF,         STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(PoliwrathPicFront)
+	assert BANK(PoliwrathPicFront) == BANK(PoliwrathPicBack)
