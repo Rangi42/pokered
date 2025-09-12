@@ -1,4 +1,5 @@
-	db DEX_SNORLAX ; pokedex id
+SnorlaxBaseStats::
+	dw DEX_SNORLAX ; pokedex id
 
 	db 160, 110,  65,  30,  65
 	;   hp  atk  def  spd  spc
@@ -24,4 +25,5 @@
 	     STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(SnorlaxPicFront)
+	assert BANK(SnorlaxPicFront) == BANK(SnorlaxPicBack)

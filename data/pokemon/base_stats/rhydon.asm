@@ -1,4 +1,5 @@
-	db DEX_RHYDON ; pokedex id
+RhydonBaseStats::
+	dw DEX_RHYDON ; pokedex id
 
 	db 105, 130, 120,  40,  45
 	;   hp  atk  def  spd  spc
@@ -23,4 +24,5 @@
 	     SURF,         STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(RhydonPicFront)
+	assert BANK(RhydonPicFront) == BANK(RhydonPicBack)

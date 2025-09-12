@@ -1,4 +1,5 @@
-	db DEX_WEEDLE ; pokedex id
+WeedleBaseStats::
+	dw DEX_WEEDLE ; pokedex id
 
 	db  40,  35,  30,  50,  20
 	;   hp  atk  def  spd  spc
@@ -17,4 +18,5 @@
 	tmhm
 	; end
 
-	db 0 ; padding
+	db BANK(WeedlePicFront)
+	assert BANK(WeedlePicFront) == BANK(WeedlePicBack)

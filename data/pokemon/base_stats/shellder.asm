@@ -1,4 +1,5 @@
-	db DEX_SHELLDER ; pokedex id
+ShellderBaseStats::
+	dw DEX_SHELLDER ; pokedex id
 
 	db  30,  65, 100,  40,  45
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     REST,         EXPLOSION,    TRI_ATTACK,   SUBSTITUTE,   SURF
 	; end
 
-	db 0 ; padding
+	db BANK(ShellderPicFront)
+	assert BANK(ShellderPicFront) == BANK(ShellderPicBack)

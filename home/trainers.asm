@@ -88,7 +88,8 @@ TalkToTrainer::
 	ld a, TRAINER_EVENT_FLAG_POINTER
 	call ReadTrainerHeaderInfo
 	ld a, [wTrainerHeaderFlagBit]
-	ld c, a
+	ld e, a
+	ld d, 0
 	ld b, FLAG_TEST
 	call TrainerFlagAction
 	ld a, c
@@ -190,12 +191,13 @@ EndTrainerBattle::
 	ld a, TRAINER_EVENT_FLAG_POINTER
 	call ReadTrainerHeaderInfo
 	ld a, [wTrainerHeaderFlagBit]
-	ld c, a
+	ld e, a
+	ld d, 0
 	ld b, FLAG_SET
-	call TrainerFlagAction ; flag trainer as fought
-	ld a, [wEnemyMonOrTrainerClass]
-	cp OPP_ID_OFFSET
-	jr nc, .skipRemoveSprite
+	call TrainerFlagAction; flag trainer as fought
+	ld a, [wEnemyMonOrTrainerClass + 1]
+	cp $ff
+	jr z, .skipRemoveSprite
 	ld hl, wToggleableObjectList
 	ld de, $2
 	ld a, [wSpriteIndex]
@@ -224,15 +226,14 @@ TrainerWalkUpToPlayer_Bank0::
 
 ; sets opponent trainer class and party level based on the engaging trainer data
 InitBattleEnemyParameters::
+	ld a, [wEngagedTrainerClass + 1]
+	ld [wCurOpponent + 1], a
+	ld [wEnemyMonOrTrainerClass + 1], a
 	ld a, [wEngagedTrainerClass]
 	ld [wCurOpponent], a
 	ld [wEnemyMonOrTrainerClass], a
-	cp OPP_ID_OFFSET
 	ld a, [wEngagedTrainerSet]
-	jr c, .noTrainer
 	ld [wTrainerNo], a
-	ret
-.noTrainer
 	ld [wCurEnemyLevel], a
 	ret
 
@@ -270,8 +271,11 @@ CheckForEngagingTrainers::
 	call ReadTrainerHeaderInfo
 	ld b, FLAG_TEST
 	ld a, [wTrainerHeaderFlagBit]
-	ld c, a
+	push de
+	ld e, a
+	ld d, 0
 	call TrainerFlagAction
+	pop de
 	ld a, c
 	and a ; has the trainer already been defeated?
 	jr nz, .continue
@@ -322,11 +326,15 @@ EngageMapTrainer::
 	ld d, 0
 	ld a, [wSpriteIndex]
 	dec a
+	ld b, a
 	add a
+	add b
 	ld e, a
 	add hl, de
 	ld a, [hli]
 	ld [wEngagedTrainerClass], a
+	ld a, [hli]
+	ld [wEngagedTrainerClass + 1], a
 	ld a, [hl]
 	ld [wEngagedTrainerSet], a
 	jp PlayTrainerMusic
@@ -378,60 +386,5 @@ TrainerEndBattleText::
 	call TextCommandProcessor
 	jp TextScriptEnd
 
-; only engage with the trainer if the player is not already
-; engaged with another trainer
-; XXX unused?
-CheckIfAlreadyEngaged::
-	ld a, [wMiscFlags]
-	bit BIT_SEEN_BY_TRAINER, a
-	ret nz
-	call EngageMapTrainer
-	xor a
-	ret
-
 PlayTrainerMusic::
-	ld a, [wEngagedTrainerClass]
-	cp OPP_RIVAL1
-	ret z
-	cp OPP_RIVAL2
-	ret z
-	cp OPP_RIVAL3
-	ret z
-	ld a, [wGymLeaderNo]
-	and a
-	ret nz
-	xor a
-	ld [wAudioFadeOutControl], a
-	ld a, SFX_STOP_ALL_MUSIC
-	call PlaySound
-	ld a, BANK(Music_MeetEvilTrainer)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
-	ld a, [wEngagedTrainerClass]
-	ld b, a
-	ld hl, EvilTrainerList
-.evilTrainerListLoop
-	ld a, [hli]
-	cp $ff
-	jr z, .noEvilTrainer
-	cp b
-	jr nz, .evilTrainerListLoop
-	ld a, MUSIC_MEET_EVIL_TRAINER
-	jr .PlaySound
-.noEvilTrainer
-	ld hl, FemaleTrainerList
-.femaleTrainerListLoop
-	ld a, [hli]
-	cp $ff
-	jr z, .maleTrainer
-	cp b
-	jr nz, .femaleTrainerListLoop
-	ld a, MUSIC_MEET_FEMALE_TRAINER
-	jr .PlaySound
-.maleTrainer
-	ld a, MUSIC_MEET_MALE_TRAINER
-.PlaySound
-	ld [wNewSoundID], a
-	jp PlaySound
-
-INCLUDE "data/trainers/encounter_types.asm"
+	farjp _PlayTrainerMusic

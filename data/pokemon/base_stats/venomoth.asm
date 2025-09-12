@@ -1,4 +1,5 @@
-	db DEX_VENOMOTH ; pokedex id
+VenomothBaseStats::
+	dw DEX_VENOMOTH ; pokedex id
 
 	db  70,  65,  60,  90,  90
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SWIFT,        REST,         PSYWAVE,      SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(VenomothPicFront)
+	assert BANK(VenomothPicFront) == BANK(VenomothPicBack)

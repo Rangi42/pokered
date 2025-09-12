@@ -3,8 +3,12 @@ InternalClockTradeAnim:
 ; In-game trades and internally clocked link cable trades use this.
 	ld a, [wTradedPlayerMonSpecies]
 	ld [wLeftGBMonSpecies], a
+	ld a, [wTradedPlayerMonSpecies + 1]
+	ld [wLeftGBMonSpecies + 1], a
 	ld a, [wTradedEnemyMonSpecies]
 	ld [wRightGBMonSpecies], a
+	ld a, [wTradedEnemyMonSpecies + 1]
+	ld [wRightGBMonSpecies + 1], a
 	ld de, InternalClockTradeFuncSequence
 	jr TradeAnimCommon
 
@@ -13,8 +17,12 @@ ExternalClockTradeAnim:
 ; Externally clocked link cable trades use this.
 	ld a, [wTradedEnemyMonSpecies]
 	ld [wLeftGBMonSpecies], a
+	ld a, [wTradedEnemyMonSpecies + 1]
+	ld [wLeftGBMonSpecies + 1], a
 	ld a, [wTradedPlayerMonSpecies]
 	ld [wRightGBMonSpecies], a
+	ld a, [wTradedPlayerMonSpecies + 1]
+	ld [wRightGBMonSpecies + 1], a
 	ld de, ExternalClockTradeFuncSequence
 
 TradeAnimCommon:
@@ -187,6 +195,8 @@ LoadTradingGFXAndMonNames:
 	ldh [hAutoBGTransferEnabled], a
 	ld a, [wTradedPlayerMonSpecies]
 	ld [wNamedObjectIndex], a
+	ld a, [wTradedPlayerMonSpecies + 1]
+	ld [wNamedObjectIndex + 1], a
 	call GetMonName
 	ld hl, wNameBuffer
 	ld de, wStringBuffer
@@ -194,6 +204,8 @@ LoadTradingGFXAndMonNames:
 	call CopyData
 	ld a, [wTradedEnemyMonSpecies]
 	ld [wNamedObjectIndex], a
+	ld a, [wTradedEnemyMonSpecies + 1]
+	ld [wNamedObjectIndex + 1], a
 	jp GetMonName
 
 Trade_LoadMonPartySpriteGfx:
@@ -241,6 +253,9 @@ Trade_ShowPlayerMon:
 	call CopyScreenTileBufferToVRAM
 	call ClearScreen
 	ld a, [wTradedPlayerMonSpecies]
+	ld c, a
+	ld a, [wTradedPlayerMonSpecies + 1]
+	ld b, a
 	call Trade_LoadMonSprite
 	ld a, $7e
 .slideScreenLoop
@@ -259,6 +274,9 @@ Trade_ShowPlayerMon:
 	ld a, TRADE_BALL_DROP_ANIM
 	call Trade_ShowAnimation ; clears mon pic
 	ld a, [wTradedPlayerMonSpecies]
+	ld c, a
+	ld a, [wTradedPlayerMonSpecies + 1]
+	ld b, a
 	call PlayCry
 	xor a
 	ldh [hAutoBGTransferEnabled], a
@@ -364,12 +382,18 @@ Trade_ShowEnemyMon:
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	ld a, [wTradedEnemyMonSpecies]
+	ld c, a
+	ld a, [wTradedEnemyMonSpecies + 1]
+	ld b, a
 	call Trade_LoadMonSprite
 	ld a, TRADE_BALL_POOF_ANIM
 	call Trade_ShowAnimation
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	ld a, [wTradedEnemyMonSpecies]
+	ld c, a
+	ld a, [wTradedEnemyMonSpecies + 1]
+	ld b, a
 	call PlayCry
 	call Trade_Delay100
 	hlcoord 4, 10
@@ -390,6 +414,8 @@ Trade_AnimLeftToRight:
 	ld [wBaseCoordY], a
 	ld a, [wLeftGBMonSpecies]
 	ld [wMonPartySpriteSpecies], a
+	ld a, [wLeftGBMonSpecies + 1]
+	ld [wMonPartySpriteSpecies + 1], a
 	call Trade_WriteCircledMonOAM
 	call Trade_DrawLeftGameboy
 	call Trade_CopyTileMapToVRAM
@@ -422,6 +448,8 @@ Trade_AnimRightToLeft:
 	ld [wBaseCoordY], a
 	ld a, [wRightGBMonSpecies]
 	ld [wMonPartySpriteSpecies], a
+	ld a, [wRightGBMonSpecies + 1]
+	ld [wMonPartySpriteSpecies + 1], a
 	call Trade_WriteCircledMonOAM
 	call Trade_DrawRightGameboy
 	call Trade_CopyTileMapToVRAM
@@ -735,11 +763,16 @@ Trade_CircleOAMBlocks:
 	db ICON_TRADEBUBBLE << 2 + 1, OAM_PAL1 | OAM_XFLIP | OAM_YFLIP
 	db ICON_TRADEBUBBLE << 2 + 0, OAM_PAL1 | OAM_XFLIP | OAM_YFLIP
 
-; a = species
+; bc = species
 Trade_LoadMonSprite:
+	ld a, c
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
 	ld [wWholeScreenPaletteMonSpecies], a
+	ld a, b
+	ld [wCurPartySpecies + 1], a
+	ld [wCurSpecies + 1], a
+	ld [wWholeScreenPaletteMonSpecies + 1], a
 	ld b, SET_PAL_POKEMON_WHOLE_SCREEN
 	ld c, 0
 	call RunPaletteCommand

@@ -1,4 +1,5 @@
-	db DEX_FLAREON ; pokedex id
+FlareonBaseStats::
+	dw DEX_FLAREON ; pokedex id
 
 	db  65, 130,  60,  65, 110
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     FIRE_BLAST,   SWIFT,        SKULL_BASH,   REST,         SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(FlareonPicFront)
+	assert BANK(FlareonPicFront) == BANK(FlareonPicBack)

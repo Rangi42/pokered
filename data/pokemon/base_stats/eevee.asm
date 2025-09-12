@@ -1,4 +1,5 @@
-	db DEX_EEVEE ; pokedex id
+EeveeBaseStats::
+	dw DEX_EEVEE ; pokedex id
 
 	db  55,  55,  50,  55,  65
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     SKULL_BASH,   REST,         SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(EeveePicFront)
+	assert BANK(EeveePicFront) == BANK(EeveePicBack)

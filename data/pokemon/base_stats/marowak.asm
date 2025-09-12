@@ -1,4 +1,5 @@
-	db DEX_MAROWAK ; pokedex id
+MarowakBaseStats::
+	dw DEX_MAROWAK ; pokedex id
 
 	db  60,  80, 110,  45,  50
 	;   hp  atk  def  spd  spc
@@ -22,4 +23,5 @@
 	     STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(MarowakPicFront)
+	assert BANK(MarowakPicFront) == BANK(MarowakPicBack)

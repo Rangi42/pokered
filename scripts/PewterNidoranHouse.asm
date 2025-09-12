@@ -10,7 +10,7 @@ PewterNidoranHouse_TextPointers:
 PewterNidoranHouseNidoranText:
 	text_far _PewterNidoranHouseNidoranText
 	text_asm
-	ld a, NIDORAN_M
+	ld bc, NIDORAN_M
 	call PlayCry
 	call WaitForSoundToFinish
 	jp TextScriptEnd

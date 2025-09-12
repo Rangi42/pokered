@@ -1,25 +1,25 @@
 Route10WildMons:
 	def_grass_wildmons 15 ; encounter rate
-	db 16, VOLTORB
-	db 16, SPEAROW
-	db 14, VOLTORB
+	dbw 16, VOLTORB
+	dbw 16, SPEAROW
+	dbw 14, VOLTORB
 IF DEF(_RED)
-	db 11, EKANS
-	db 13, SPEAROW
-	db 15, EKANS
-	db 17, VOLTORB
-	db 17, SPEAROW
-	db 13, EKANS
-	db 17, EKANS
+	dbw 11, EKANS
+	dbw 13, SPEAROW
+	dbw 15, EKANS
+	dbw 17, VOLTORB
+	dbw 17, SPEAROW
+	dbw 13, EKANS
+	dbw 17, EKANS
 ENDC
 IF DEF(_BLUE)
-	db 11, SANDSHREW
-	db 13, SPEAROW
-	db 15, SANDSHREW
-	db 17, VOLTORB
-	db 17, SPEAROW
-	db 13, SANDSHREW
-	db 17, SANDSHREW
+	dbw 11, SANDSHREW
+	dbw 13, SPEAROW
+	dbw 15, SANDSHREW
+	dbw 17, VOLTORB
+	dbw 17, SPEAROW
+	dbw 13, SANDSHREW
+	dbw 17, SANDSHREW
 ENDC
 	end_grass_wildmons
 

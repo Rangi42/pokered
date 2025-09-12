@@ -10,6 +10,9 @@ UsedStrengthText:
 	text_far _UsedStrengthText
 	text_asm
 	ld a, [wCurPartySpecies]
+	ld c, a
+	ld a, [wCurPartySpecies + 1]
+	ld b, a
 	call PlayCry
 	call Delay3
 	jp TextScriptEnd

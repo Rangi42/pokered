@@ -1,4 +1,5 @@
-	db DEX_DIGLETT ; pokedex id
+DiglettBaseStats::
+	dw DEX_DIGLETT ; pokedex id
 
 	db  10,  55,  25,  95,  45
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     BIDE,         REST,         ROCK_SLIDE,   SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(DiglettPicFront)
+	assert BANK(DiglettPicFront) == BANK(DiglettPicBack)

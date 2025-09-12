@@ -2,7 +2,8 @@ MarkTownVisitedAndLoadToggleableObjects::
 	ld a, [wCurMap]
 	cp FIRST_ROUTE_MAP
 	jr nc, .notInTown
-	ld c, a
+	ld e, a
+	ld d, 0
 	ld b, FLAG_SET
 	ld hl, wTownVisitedFlag   ; mark town as visited (for flying)
 	predef FlagActionPredef
@@ -84,7 +85,8 @@ InitializeToggleableObjectsFlags:
 	jr nz, .skip
 	ld hl, wToggleableObjectFlags
 	ld a, [wToggleableObjectCounter]
-	ld c, a
+	ld e, a
+	ld d, 0
 	ld b, FLAG_SET
 	call ToggleableObjectFlagAction ; set flag if object is toggled off
 .skip
@@ -108,7 +110,8 @@ IsObjectHidden:
 	cp b
 	ld a, [hli]
 	jr nz, .loop
-	ld c, a
+	ld e, a
+	ld d, 0
 	ld b, FLAG_TEST
 	ld hl, wToggleableObjectFlags
 	call ToggleableObjectFlagAction
@@ -127,7 +130,8 @@ ShowObject:
 ShowObject2:
 	ld hl, wToggleableObjectFlags
 	ld a, [wToggleableObjectIndex]
-	ld c, a
+	ld e, a
+	ld d, 0
 	ld b, FLAG_RESET
 	call ToggleableObjectFlagAction   ; reset "removed" flag
 	jp UpdateSprites
@@ -137,7 +141,8 @@ ShowObject2:
 HideObject:
 	ld hl, wToggleableObjectFlags
 	ld a, [wToggleableObjectIndex]
-	ld c, a
+	ld e, a
+	ld d, 0
 	ld b, FLAG_SET
 	call ToggleableObjectFlagAction   ; set "removed" flag
 	jp UpdateSprites
@@ -150,27 +155,25 @@ ToggleableObjectFlagAction:
 	push bc
 
 	; bit
-	ld a, c
-	ld d, a
+	ld a, e
 	and 7
-	ld e, a
+	ld c, a
 
 	; byte
-	ld a, d
-	srl a
-	srl a
-	srl a
-	add l
-	ld l, a
-	jr nc, .ok
-	inc h
-.ok
+REPT 3
+	srl e
+	srl d
+	jr nc, .ok\@
+	set 7, e
+.ok\@
+ENDR
+	add hl, de
 
 	; d = 1 << e (bitmask)
-	inc e
+	inc c
 	ld d, 1
 .shift
-	dec e
+	dec c
 	jr z, .shifted
 	sla d
 	jr .shift

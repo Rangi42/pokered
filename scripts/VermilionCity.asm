@@ -224,7 +224,7 @@ VermilionCityGambler2Text:
 VermilionCityMachopText:
 	text_far _VermilionCityMachopText
 	text_asm
-	ld a, MACHOP
+	ld bc, MACHOP
 	call PlayCry
 	call WaitForSoundToFinish
 	ld hl, .StompingTheLandFlatText

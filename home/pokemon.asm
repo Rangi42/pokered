@@ -83,16 +83,6 @@ DrawHPBar::
 LoadMonData::
 	jpfar LoadMonData_
 
-OverwritewMoves::
-; Write c to [wMoves + b]. Unused.
-	ld hl, wMoves
-	ld e, b
-	ld d, 0
-	add hl, de
-	ld a, c
-	ld [hl], a
-	ret
-
 LoadFlippedFrontSpriteByMonIndex::
 	ld a, 1
 	ld [wSpriteFlipped], a
@@ -100,25 +90,46 @@ LoadFlippedFrontSpriteByMonIndex::
 LoadFrontSpriteByMonIndex::
 	push hl
 	ld a, [wPokedexNum]
-	push af
+	ld c, a
+	ld a, [wPokedexNum + 1]
+	ld b, a
+	push bc
 	ld a, [wCurPartySpecies]
 	ld [wPokedexNum], a
+	ld a, [wCurPartySpecies + 1]
+	ld [wPokedexNum + 1], a
 	predef IndexToPokedex
 	ld hl, wPokedexNum
+	ld a, [hli]
+	ld e, a
 	ld a, [hl]
+	ld d, a
 	pop bc
 	ld [hl], b
-	and a
+	dec hl
+	ld [hl], c
 	pop hl
+	ld a, e
+	and a
+	jr nz, .notZero
+	ld a, d
+	and a
 	jr z, .invalidDexNumber ; dex #0 invalid
-	cp NUM_POKEMON + 1
+.notZero
+	ld a, d
+	cp HIGH(NUM_POKEMON + 1)
+	jr c, .validDexNumber
+	ld a, e
+	cp LOW(NUM_POKEMON + 1)
 	jr c, .validDexNumber   ; dex >#151 invalid
 .invalidDexNumber
 	; This is the so-called "Rhydon trap" or "Rhydon glitch"
 	; to fail-safe invalid dex numbers
 	; (see https://glitchcity.wiki/wiki/Rhydon_trap
 	; or https://bulbapedia.bulbagarden.net/wiki/Rhydon_glitch)
-	ld a, RHYDON
+	ld a, HIGH(RHYDON)
+	ld [wCurPartySpecies + 1], a
+	ld a, LOW(RHYDON)
 	ld [wCurPartySpecies], a
 	ret
 .validDexNumber
@@ -149,10 +160,8 @@ PlayCry::
 	jp WaitForSoundToFinish
 
 GetCryData::
-; Load cry data for monster a.
-	dec a
-	ld c, a
-	ld b, 0
+; Load cry data for monster bc.
+	dec bc
 	ld hl, CryData
 	add hl, bc
 	add hl, bc
@@ -267,9 +276,13 @@ HandlePartyMenuInput::
 	ld b, 0
 	ld c, a
 	add hl, bc
-	ld a, [hl]
+	add hl, bc
+	ld a, [hli]
 	ld [wCurPartySpecies], a
 	ld [wBattleMonSpecies2], a
+	ld a, [hl]
+	ld [wCurPartySpecies + 1], a
+	ld [wBattleMonSpecies2 + 1], a
 	call BankswitchBack
 	and a
 	ret
@@ -291,7 +304,7 @@ HandlePartyMenuInput::
 	ld a, [wCurrentMenuItem]
 	ld [wWhichPokemon], a
 	farcall SwitchPartyMon
-	jr HandlePartyMenuInput
+	jp HandlePartyMenuInput
 
 DrawPartyMenu::
 	ld hl, DrawPartyMenu_
@@ -360,53 +373,61 @@ PrintLevelCommon::
 	ld b, LEFT_ALIGN | 1 ; 1 byte
 	jp PrintNumber
 
-GetwMoves::
-; Unused. Returns the move at index a from wMoves in a
-	ld hl, wMoves
-	ld c, a
-	ld b, 0
-	add hl, bc
-	ld a, [hl]
-	ret
-
 ; copies the base stat data of a pokemon to wMonHeader
 ; INPUT:
-; [wCurSpecies] = pokemon ID
+; [wCurSpecies] and [wCurSpecies+1] = pokemon ID
 GetMonHeader::
 	ldh a, [hLoadedROMBank]
 	push af
-	ld a, BANK(BaseStats)
+	ld a, BANK(BaseStatsPointers)
 	ldh [hLoadedROMBank], a
 	ld [rROMB], a
 	push bc
 	push de
 	push hl
 	ld a, [wPokedexNum]
-	push af
+	ld c, a
+	ld a, [wPokedexNum + 1]
+	ld b, a
+	push bc
 	ld a, [wCurSpecies]
 	ld [wPokedexNum], a
+	ld a, [wCurSpecies + 1]
+	ld [wPokedexNum + 1], a
+	ld de, FOSSIL_KABUTOPS
+	call CompareWithCurSpecies
 	ld de, FossilKabutopsPic
-	ld b, $66 ; size of Kabutops fossil and Ghost sprites
-	cp FOSSIL_KABUTOPS ; Kabutops fossil
+	lb bc, $66, BANK(FossilKabutopsPic)
 	jr z, .specialID
+	ld de, MON_GHOST
+	call CompareWithCurSpecies
 	ld de, GhostPic
-	cp MON_GHOST ; Ghost
+	lb bc, $66, BANK(GhostPic)
 	jr z, .specialID
+	ld de, FOSSIL_AERODACTYL
+	call CompareWithCurSpecies
 	ld de, FossilAerodactylPic
-	ld b, $77 ; size of Aerodactyl fossil sprite
-	cp FOSSIL_AERODACTYL ; Aerodactyl fossil
+	lb bc, $77, BANK(FossilAerodactylPic)
 	jr z, .specialID
-	cp MEW
-	jr z, .mew
 	predef IndexToPokedex
 	ld a, [wPokedexNum]
-	dec a
-	ld bc, BASE_DATA_SIZE
-	ld hl, BaseStats
-	call AddNTimes
+	ld e, a
+	ld a, [wPokedexNum + 1]
+	ld d, a
+	dec de
+	ld hl, BaseStatsPointers
+	add hl, de
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 	ld de, wMonHeader
+	ld a, b
 	ld bc, BASE_DATA_SIZE
-	call CopyData
+	call FarCopyData
 	jr .done
 .specialID
 	ld hl, wMonHSpriteDim
@@ -415,18 +436,18 @@ GetMonHeader::
 	ld [hl], e ; write front sprite pointer
 	inc hl
 	ld [hl], d
-	jr .done
-.mew
-	ld hl, MewBaseStats
-	ld de, wMonHeader
-	ld bc, BASE_DATA_SIZE
-	ld a, BANK(MewBaseStats)
-	call FarCopyData
+	ld hl, wMonHSpritesBank
+	ld [hl], c
 .done
 	ld a, [wCurSpecies]
 	ld [wMonHIndex], a
-	pop af
+	ld a, [wCurSpecies + 1]
+	ld [wMonHIndex + 1], a
+	pop bc
+	ld a, c
 	ld [wPokedexNum], a
+	ld a, b
+	ld [wPokedexNum + 1], a
 	pop hl
 	pop de
 	pop bc
@@ -452,4 +473,19 @@ GetPartyMonName::
 	pop de
 	pop bc
 	pop hl
+	ret
+
+CompareWithCurSpecies::
+	ld a, [wCurSpecies]
+	ld c, a
+	ld a, [wCurSpecies + 1]
+	ld b, a
+	; fallthrough
+
+CompareTwoBytes::
+	ld a, b
+	cp d
+	ret nz
+	ld a, c
+	cp e
 	ret

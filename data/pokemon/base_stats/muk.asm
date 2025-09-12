@@ -1,4 +1,5 @@
-	db DEX_MUK ; pokedex id
+MukBaseStats::
+	dw DEX_MUK ; pokedex id
 
 	db 105, 105,  75,  50,  65
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     SELFDESTRUCT, FIRE_BLAST,   REST,         EXPLOSION,    SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(MukPicFront)
+	assert BANK(MukPicFront) == BANK(MukPicBack)

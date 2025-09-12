@@ -387,6 +387,7 @@ DisplayFieldMoveMonMenu:
 	ld [hli], a ; wFieldMoves + 2
 	ld [hli], a ; wFieldMoves + 3
 	ld [hli], a ; wNumFieldMoves
+	ld [hli], a ; wNumFieldMoves + 1
 	ld [hl], 12 ; wFieldMovesLeftmostXCoord
 	call GetMonFieldMoves
 	ld a, [wNumFieldMoves]

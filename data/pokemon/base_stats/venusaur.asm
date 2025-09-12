@@ -1,4 +1,5 @@
-	db DEX_VENUSAUR ; pokedex id
+VenusaurBaseStats::
+	dw DEX_VENUSAUR ; pokedex id
 
 	db  80,  82,  83,  80, 100
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     CUT
 	; end
 
-	db 0 ; padding
+	db BANK(VenusaurPicFront)
+	assert BANK(VenusaurPicFront) == BANK(VenusaurPicBack)
