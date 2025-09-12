@@ -1,4 +1,5 @@
-	db DEX_BLASTOISE ; pokedex id
+BlastoiseBaseStats::
+	dw DEX_BLASTOISE ; pokedex id
 
 	db  79,  83, 100,  78,  85
 	;   hp  atk  def  spd  spc
@@ -22,4 +23,5 @@
 	     SURF,         STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(BlastoisePicFront)
+	assert BANK(BlastoisePicFront) == BANK(BlastoisePicBack)

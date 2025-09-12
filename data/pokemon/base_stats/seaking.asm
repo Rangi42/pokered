@@ -1,4 +1,5 @@
-	db DEX_SEAKING ; pokedex id
+SeakingBaseStats::
+	dw DEX_SEAKING ; pokedex id
 
 	db  80,  92,  65,  68,  80
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     REST,         SUBSTITUTE,   SURF
 	; end
 
-	db 0 ; padding
+	db BANK(SeakingPicFront)
+	assert BANK(SeakingPicFront) == BANK(SeakingPicBack)

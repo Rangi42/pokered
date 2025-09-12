@@ -1,4 +1,5 @@
-	db DEX_SEEL ; pokedex id
+SeelBaseStats::
+	dw DEX_SEEL ; pokedex id
 
 	db  65,  45,  55,  45,  70
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     REST,         SUBSTITUTE,   SURF,         STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(SeelPicFront)
+	assert BANK(SeelPicFront) == BANK(SeelPicBack)

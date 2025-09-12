@@ -1,4 +1,5 @@
-	db DEX_MACHAMP ; pokedex id
+MachampBaseStats::
+	dw DEX_MACHAMP ; pokedex id
 
 	db  90, 130,  80,  55,  65
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     REST,         ROCK_SLIDE,   SUBSTITUTE,   STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(MachampPicFront)
+	assert BANK(MachampPicFront) == BANK(MachampPicBack)

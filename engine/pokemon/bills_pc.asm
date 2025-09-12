@@ -225,6 +225,9 @@ BillsPCDeposit:
 	call DisplayDepositWithdrawMenu
 	jp nc, BillsPCMenu
 	ld a, [wCurPartySpecies]
+	ld c, a
+	ld a, [wCurPartySpecies + 1]
+	ld b, a
 	call GetCryData
 	call PlaySoundWaitForCurrent
 	ld a, PARTY_TO_BOX
@@ -277,6 +280,9 @@ BillsPCWithdraw:
 	ld hl, wBoxMonNicks
 	call GetPartyMonName
 	ld a, [wCurPartySpecies]
+	ld c, a
+	ld a, [wCurPartySpecies + 1]
+	ld b, a
 	call GetCryData
 	call PlaySoundWaitForCurrent
 	xor a ; BOX_TO_PARTY
@@ -312,6 +318,9 @@ BillsPCRelease:
 	call RemovePokemon
 	call WaitForSoundToFinish
 	ld a, [wCurPartySpecies]
+	ld c, a
+	ld a, [wCurPartySpecies + 1]
+	ld b, a
 	call PlayCry
 	ld hl, MonWasReleasedText
 	call PrintText

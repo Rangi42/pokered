@@ -1,4 +1,5 @@
-	db DEX_KADABRA ; pokedex id
+KadabraBaseStats::
+	dw DEX_KADABRA ; pokedex id
 
 	db  40,  35,  30, 105, 120
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     THUNDER_WAVE, PSYWAVE,      TRI_ATTACK,   SUBSTITUTE,   FLASH
 	; end
 
-	db 0 ; padding
+	db BANK(KadabraPicFront)
+	assert BANK(KadabraPicFront) == BANK(KadabraPicBack)

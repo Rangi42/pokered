@@ -1,4 +1,5 @@
-	db DEX_SLOWPOKE ; pokedex id
+SlowpokeBaseStats::
+	dw DEX_SLOWPOKE ; pokedex id
 
 	db  90,  65,  65,  15,  40
 	;   hp  atk  def  spd  spc
@@ -22,4 +23,5 @@
 	     TRI_ATTACK,   SUBSTITUTE,   SURF,         STRENGTH,     FLASH
 	; end
 
-	db 0 ; padding
+	db BANK(SlowpokePicFront)
+	assert BANK(SlowpokePicFront) == BANK(SlowpokePicBack)

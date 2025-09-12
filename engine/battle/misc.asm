@@ -117,6 +117,9 @@ GetMonSpecies:
 .getSpecies
 	ld d, 0
 	add hl, de
-	ld a, [hl]
+	add hl, de
+	ld a, [hli]
 	ld [wCurPartySpecies], a
+	ld a, [hl]
+	ld [wCurPartySpecies + 1], a
 	ret

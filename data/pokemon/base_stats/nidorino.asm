@@ -1,4 +1,5 @@
-	db DEX_NIDORINO ; pokedex id
+NidorinoBaseStats::
+	dw DEX_NIDORINO ; pokedex id
 
 	db  61,  72,  57,  65,  55
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     BIDE,         SKULL_BASH,   REST,         SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(NidorinoPicFront)
+	assert BANK(NidorinoPicFront) == BANK(NidorinoPicBack)

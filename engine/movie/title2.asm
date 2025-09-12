@@ -90,11 +90,24 @@ TitleBallYTable:
 TitleScreenAnimateBallIfStarterOut:
 ; Animate the TitleBall if a starter just got scrolled out.
 	ld a, [wTitleMonSpecies]
-	cp STARTER1
+	cp LOW(STARTER1)
+	jr nz, .not1
+	ld a, [wTitleMonSpecies + 1]
+	cp HIGH(STARTER1)
 	jr z, .ok
-	cp STARTER2
+.not1
+	ld a, [wTitleMonSpecies]
+	cp LOW(STARTER2)
+	jr nz, .not2
+	ld a, [wTitleMonSpecies + 1]
+	cp HIGH(STARTER2)
 	jr z, .ok
-	cp STARTER3
+.not2
+	ld a, [wTitleMonSpecies]
+	cp LOW(STARTER3)
+	ret nz
+	ld a, [wTitleMonSpecies + 1]
+	cp HIGH(STARTER3)
 	ret nz
 .ok
 	ld e, 1 ; animate titleball

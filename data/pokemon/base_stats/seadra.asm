@@ -1,4 +1,5 @@
-	db DEX_SEADRA ; pokedex id
+SeadraBaseStats::
+	dw DEX_SEADRA ; pokedex id
 
 	db  55,  65,  95,  85,  95
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SUBSTITUTE,   SURF
 	; end
 
-	db 0 ; padding
+	db BANK(SeadraPicFront)
+	assert BANK(SeadraPicFront) == BANK(SeadraPicBack)

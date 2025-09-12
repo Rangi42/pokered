@@ -58,9 +58,13 @@ DisplayCreditsMon:
 	ld b, 0
 	ld hl, CreditsMons
 	add hl, bc ; go that far in the list of monsters and get the next one
-	ld a, [hl]
+	add hl, bc
+	ld a, [hli]
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
+	ld a, [hl]
+	ld [wCurPartySpecies + 1], a
+	ld [wCurSpecies + 1], a
 	hlcoord 8, 6
 	call GetMonHeader
 	call LoadFrontSpriteByMonIndex

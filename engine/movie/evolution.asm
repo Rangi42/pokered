@@ -22,11 +22,16 @@ EvolveMon:
 	ldh [hTileAnimations], a
 	ld a, [wEvoOldSpecies]
 	ld [wWholeScreenPaletteMonSpecies], a
+	ld a, [wEvoOldSpecies + 1]
+	ld [wWholeScreenPaletteMonSpecies + 1], a
 	ld c, 0
 	call EvolutionSetWholeScreenPalette
 	ld a, [wEvoNewSpecies]
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
+	ld a, [wEvoNewSpecies + 1]
+	ld [wCurPartySpecies + 1], a
+	ld [wCurSpecies + 1], a
 	call Evolution_LoadPic
 	ld de, vFrontPic
 	ld hl, vBackPic
@@ -35,10 +40,16 @@ EvolveMon:
 	ld a, [wEvoOldSpecies]
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
+	ld a, [wEvoOldSpecies + 1]
+	ld [wCurPartySpecies + 1], a
+	ld [wCurSpecies + 1], a
 	call Evolution_LoadPic
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	ld a, [wEvoOldSpecies]
+	ld c, a
+	ld a, [wEvoOldSpecies + 1]
+	ld b, a
 	call PlayCry
 	call WaitForSoundToFinish
 	ld c, BANK(Music_SafariZone)
@@ -65,12 +76,21 @@ EvolveMon:
 	ld [wEvoMonTileOffset], a
 	call Evolution_ChangeMonPic ; show the new species pic
 	ld a, [wEvoNewSpecies]
+	ld c, a
+	ld a, [wEvoNewSpecies + 1]
+	ld b, a
 .done
+	ld a, c
 	ld [wWholeScreenPaletteMonSpecies], a
+	ld a, b
+	ld [wWholeScreenPaletteMonSpecies + 1], a
 	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 	call PlaySound
 	ld a, [wWholeScreenPaletteMonSpecies]
+	ld c, a
+	ld a, [wWholeScreenPaletteMonSpecies + 1]
+	ld b, a
 	call PlayCry
 	ld c, 0
 	call EvolutionSetWholeScreenPalette
@@ -91,6 +111,9 @@ EvolveMon:
 	ld a, 1
 	ld [wEvoCancelled], a
 	ld a, [wEvoOldSpecies]
+	ld c, a
+	ld a, [wEvoOldSpecies + 1]
+	ld b, a
 	jr .done
 
 EvolutionSetWholeScreenPalette:

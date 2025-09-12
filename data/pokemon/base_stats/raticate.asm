@@ -1,4 +1,5 @@
-	db DEX_RATICATE ; pokedex id
+RaticateBaseStats::
+	dw DEX_RATICATE ; pokedex id
 
 	db  55,  81,  60,  97,  50
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     BIDE,         SWIFT,        SKULL_BASH,   REST,         SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(RaticatePicFront)
+	assert BANK(RaticatePicFront) == BANK(RaticatePicBack)
