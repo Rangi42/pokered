@@ -1,4 +1,5 @@
-	db DEX_NINETALES ; pokedex id
+NinetalesBaseStats::
+	dw DEX_NINETALES ; pokedex id
 
 	db  73,  76,  75, 100, 100
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(NinetalesPicFront)
+	assert BANK(NinetalesPicFront) == BANK(NinetalesPicBack)

@@ -5,7 +5,7 @@ MACRO? flag_array
 ENDM
 
 MACRO box_struct
-\1Species::    db
+\1Species::    dw
 \1HP::         dw
 \1BoxLevel::   db
 \1Status::     db
@@ -37,7 +37,7 @@ MACRO party_struct
 ENDM
 
 MACRO battle_struct
-\1Species::    db
+\1Species::    dw
 \1HP::         dw
 \1PartyPos::
 \1BoxLevel::   db
