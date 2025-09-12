@@ -170,7 +170,10 @@ ItemUseBall:
 	cp POKEMON_TOWER_6F
 	jr nz, .loop
 	ld a, [wEnemyMonSpecies2]
-	cp RESTLESS_SOUL
+	cp LOW(RESTLESS_SOUL)
+	jr nz, .loop
+	ld a, [wEnemyMonSpecies2 + 1]
+	cp HIGH(RESTLESS_SOUL)
 	ld b, $10 ; can't be caught value
 	jp z, .setAnimData
 
@@ -474,8 +477,10 @@ ItemUseBall:
 	ld hl, wEnemyBattleStatus3
 	bit TRANSFORMED, [hl]
 	jr z, .notTransformed
-	ld a, DITTO
+	ld a, LOW(DITTO)
 	ld [wEnemyMonSpecies2], a
+	ld a, HIGH(DITTO)
+	ld [wEnemyMonSpecies2 + 1], a
 	jr .skip6
 
 .notTransformed
@@ -491,14 +496,22 @@ ItemUseBall:
 
 .skip6
 	ld a, [wCurPartySpecies]
-	push af
+	ld e, a
+	ld a, [wCurPartySpecies + 1]
+	ld d, a
+	push de
 	ld a, [wEnemyMonSpecies2]
 	ld [wCurPartySpecies], a
+	ld a, [wEnemyMonSpecies2 + 1]
+	ld [wCurPartySpecies + 1], a
 	ld a, [wEnemyMonLevel]
 	ld [wCurEnemyLevel], a
 	callfar LoadEnemyMonData
-	pop af
+	pop de
+	ld a, e
 	ld [wCurPartySpecies], a
+	ld a, d
+	ld [wCurPartySpecies + 1], a
 	pop hl
 	pop af
 	ld [hld], a
@@ -511,6 +524,10 @@ ItemUseBall:
 	ld [wCapturedMonSpecies], a
 	ld [wCurPartySpecies], a
 	ld [wPokedexNum], a
+	ld a, [wEnemyMonSpecies + 1]
+	ld [wCapturedMonSpecies + 1], a
+	ld [wCurPartySpecies + 1], a
+	ld [wPokedexNum + 1], a
 	ld a, [wBattleType]
 	dec a ; is this the old man battle?
 	jr z, .oldManCaughtMon ; if so, don't give the player the caught Pokémon
@@ -521,16 +538,20 @@ ItemUseBall:
 ; Add the caught Pokémon to the Pokédex.
 	predef IndexToPokedex
 	ld a, [wPokedexNum]
-	dec a
-	ld c, a
+	ld e, a
+	ld a, [wPokedexNum + 1]
+	ld d, a
+	dec de
 	ld b, FLAG_TEST
 	ld hl, wPokedexOwned
 	predef FlagActionPredef
 	ld a, c
 	push af
 	ld a, [wPokedexNum]
-	dec a
-	ld c, a
+	ld e, a
+	ld a, [wPokedexNum + 1]
+	ld d, a
+	dec de
 	ld b, FLAG_SET
 	predef FlagActionPredef
 	pop af
@@ -543,6 +564,8 @@ ItemUseBall:
 	call ClearSprites
 	ld a, [wEnemyMonSpecies]
 	ld [wPokedexNum], a
+	ld a, [wEnemyMonSpecies + 1]
+	ld [wPokedexNum + 1], a
 	predef ShowPokedexData
 
 .skipShowingPokedexData
@@ -912,6 +935,7 @@ ItemUseMedicine:
 	predef DoubleOrHalveSelectedStats
 	jp .doneHealing
 .healHP
+	inc hl
 	inc hl ; hl = address of current HP
 	ld a, [hli]
 	ld b, a
@@ -936,7 +960,8 @@ ItemUseMedicine:
 	push de
 	push bc
 	ld a, [wUsedItemOnWhichPokemon]
-	ld c, a
+	ld e, a
+	ld d, 0
 	ld hl, wPartyFoughtCurrentEnemyFlags
 	ld b, FLAG_TEST
 	predef FlagActionPredef
@@ -944,7 +969,8 @@ ItemUseMedicine:
 	and a
 	jr z, .next
 	ld a, [wUsedItemOnWhichPokemon]
-	ld c, a
+	ld e, a
+	ld d, 0
 	ld hl, wPartyGainExpFlags
 	ld b, FLAG_SET
 	predef FlagActionPredef
@@ -984,6 +1010,7 @@ ItemUseMedicine:
 	jp z, .healingItemNoEffect
 	ld a, FULL_HEAL
 	ld [wCurItem], a
+	dec hl
 	dec hl
 	dec hl
 	dec hl
@@ -1253,10 +1280,13 @@ ItemUseMedicine:
 	jp ReloadMapData
 .useVitamin
 	push hl
-	ld a, [hl]
+	ld a, [hli]
 	ld [wCurSpecies], a
 	ld [wPokedexNum], a
-	ld bc, MON_LEVEL
+	ld a, [hl]
+	ld [wCurSpecies + 1], a
+	ld [wPokedexNum + 1], a
+	ld bc, MON_LEVEL - (MON_SPECIES + 1)
 	add hl, bc ; hl now points to level
 	ld a, [hl] ; a = level
 	ld [wCurEnemyLevel], a ; store level
@@ -1403,9 +1433,23 @@ ItemUseMedicine:
 	ld d, LEVEL_UP_STATS_BOX
 	callfar PrintStatsBox
 	call WaitForTextScrollButtonPress
+	ld a, [wPokedexNum]
+	ld l, a
+	ld a, [wPokedexNum + 1]
+	ld h, a
+	push hl
+	ld a, [wLoadedMonSpecies]
+	ld [wPokedexNum], a
+	ld a, [wLoadedMonSpecies + 1]
+	ld [wPokedexNum + 1], a
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 	predef LearnMoveFromLevelUp
+	pop hl
+	ld a, l
+	ld [wPokedexNum], a
+	ld a, h
+	ld [wPokedexNum + 1], a
 	xor a
 	ld [wForceEvolution], a
 	callfar TryEvolvingMon
@@ -1826,7 +1870,8 @@ CoinCaseNumCoinsText:
 ItemUseOldRod:
 	call FishingInit
 	jp c, ItemUseNotTime
-	lb bc, 5, MAGIKARP
+	ld b, 5
+	ld de, MAGIKARP
 	ld a, $1 ; set bite
 	jr RodResponse
 
@@ -1842,14 +1887,20 @@ ItemUseGoodRod:
 	jr nc, .RandomLoop
 	; choose which monster appears
 	ld hl, GoodRodMons
+	ld c, a
 	add a
+	add c
 	ld c, a
 	ld b, 0
 	add hl, bc
 	ld b, [hl]
 	inc hl
-	ld c, [hl]
-	and a
+	ld a, [hli]
+	ld e, a
+	ld a, [hl]
+	ld d, a
+	ld a, 1
+	jr RodResponse
 .SetBite
 	ld a, 0
 	rla
@@ -1862,7 +1913,7 @@ ItemUseSuperRod:
 	call FishingInit
 	jp c, ItemUseNotTime
 	call ReadSuperRodData
-	ld a, e
+	ld a, c
 RodResponse:
 	ld [wRodResponse], a
 
@@ -1873,8 +1924,10 @@ RodResponse:
 	ld [wMoveMissed], a
 	ld a, b ; level
 	ld [wCurEnemyLevel], a
-	ld a, c ; species
+	ld a, e ; species
 	ld [wCurOpponent], a
+	ld a, d ; species
+	ld [wCurOpponent + 1], a
 
 .next
 	ld hl, wWalkBikeSurfState
@@ -2628,7 +2681,8 @@ IsKeyItem_::
 	call CopyData
 	pop af
 	dec a
-	ld c, a
+	ld e, a
+	ld d, 0
 	ld hl, wBuffer
 	ld b, FLAG_TEST
 	predef FlagActionPredef
@@ -2654,16 +2708,34 @@ SendNewMonToBox:
 
 	ld a, [wCurPartySpecies]
 	ld [wCurSpecies], a
-	ld c, a
+	ld l, a
+	ld a, [wCurPartySpecies + 1]
+	ld [wCurSpecies + 1], a
+	ld h, a
 .shiftSpeciesLoop
 	inc de
 	ld a, [de]
 	ld b, a
-	ld a, c
-	ld c, b
+	ld a, l
 	ld [de], a
+	ld l, b
+	inc de
+	ld a, [de]
+	ld c, a
+	ld a, h
+	ld [de], a
+	ld h, c
+	ld a, l
 	cp -1
 	jr nz, .shiftSpeciesLoop
+	ld a, h
+	cp -1
+	jr nz, .shiftSpeciesLoop
+	ld a, -1
+	inc de
+	ld [de], a
+	inc de
+	ld [de], a
 
 	call GetMonHeader
 	ld hl, wBoxMonOT
@@ -2853,15 +2925,15 @@ IsNextTileShoreOrWater:
 INCLUDE "data/tilesets/water_tilesets.asm"
 
 ReadSuperRodData:
-; return e = 2 if no fish on this map
-; return e = 1 if a bite, bc = level,species
-; return e = 0 if no bite
+; return c = 2 if no fish on this map
+; return c = 1 if a bite, b = level, de = species
+; return c = 0 if no bite
 	ld a, [wCurMap]
 	ld de, 3 ; each fishing group is three bytes wide
 	ld hl, SuperRodData
 	call IsInArray
 	jr c, .ReadFishingGroup
-	ld e, $2 ; $2 if no fishing groups found
+	ld c, $2 ; $2 if no fishing groups found
 	ret
 
 .ReadFishingGroup
@@ -2875,7 +2947,7 @@ ReadSuperRodData:
 
 	ld b, [hl] ; how many mons in group
 	inc hl ; point to data
-	ld e, $0 ; no bite yet
+	ld c, $0 ; no bite yet
 
 .RandomLoop
 	call Random
@@ -2887,14 +2959,18 @@ ReadSuperRodData:
 	jr nc, .RandomLoop ; if a is greater than the number of mons, regenerate
 
 	; get the mon
+	ld c, a
 	add a
+	add c
 	ld c, a
 	ld b, $0
 	add hl, bc
 	ld b, [hl] ; level
 	inc hl
-	ld c, [hl] ; species
-	ld e, $1 ; $1 if there's a bite
+	ld a, [hli] ; species
+	ld e, a
+	ld d, [hl]
+	ld c, $1 ; $1 if there's a bite
 	ret
 
 INCLUDE "data/wild/super_rod.asm"
@@ -2942,11 +3018,18 @@ CheckMapForMon:
 .loop
 	ld a, [wPokedexNum]
 	cp [hl]
-	jr nz, .nextEntry
+	jr nz, .nextEntry1
+	inc hl
+	ld a, [wPokedexNum + 1]
+	cp [hl]
+	jr nz, .nextEntry2
 	ld a, c
 	ld [de], a
 	inc de
-.nextEntry
+	jr .nextEntry2
+.nextEntry1
+	inc hl
+.nextEntry2
 	inc hl
 	inc hl
 	dec b

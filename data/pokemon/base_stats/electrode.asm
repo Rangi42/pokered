@@ -1,4 +1,5 @@
-	db DEX_ELECTRODE ; pokedex id
+ElectrodeBaseStats::
+	dw DEX_ELECTRODE ; pokedex id
 
 	db  60,  50,  70, 140,  80
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     THUNDER_WAVE, EXPLOSION,    SUBSTITUTE,   FLASH
 	; end
 
-	db 0 ; padding
+	db BANK(ElectrodePicFront)
+	assert BANK(ElectrodePicFront) == BANK(ElectrodePicBack)

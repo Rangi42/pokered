@@ -1,4 +1,5 @@
-	db DEX_GYARADOS ; pokedex id
+GyaradosBaseStats::
+	dw DEX_GYARADOS ; pokedex id
 
 	db  95, 125,  79,  81, 100
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     SUBSTITUTE,   SURF,         STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(GyaradosPicFront)
+	assert BANK(GyaradosPicFront) == BANK(GyaradosPicBack)

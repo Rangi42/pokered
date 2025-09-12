@@ -17,17 +17,8 @@ GetName::
 ; returns pointer to name in de
 	ld a, [wNameListIndex]
 	ld [wNamedObjectIndex], a
-
-	; TM names are separate from item names.
-	; BUG: This applies to all names instead of just items.
-	ASSERT NUM_POKEMON_INDEXES < HM01, \
-		"A bug in GetName will get TM/HM names for Pokémon above ${x:HM01}."
-	ASSERT NUM_ATTACKS < HM01, \
-		"A bug in GetName will get TM/HM names for moves above ${x:HM01}."
-	ASSERT NUM_TRAINERS < HM01, \
-		"A bug in GetName will get TM/HM names for trainers above ${x:HM01}."
-	cp HM01
-	jp nc, GetMachineName
+	ld a, [wNameListIndex + 1]
+	ld [wNamedObjectIndex + 1], a
 
 	ldh a, [hLoadedROMBank]
 	push af
@@ -45,6 +36,21 @@ GetName::
 	ld d, h
 	jr .gotPtr
 .otherEntries
+	; TM names are separate from item names.
+	; BUG: This applies to all names instead of just items.
+	ASSERT NUM_POKEMON_INDEXES < HM01, \
+		"A bug in GetName will get TM/HM names for Pokémon above ${x:HM01}."
+	ASSERT NUM_ATTACKS < HM01, \
+		"A bug in GetName will get TM/HM names for moves above ${x:HM01}."
+	ASSERT NUM_TRAINERS < HM01, \
+		"A bug in GetName will get TM/HM names for trainers above ${x:HM01}."
+	ld a,[wNameListIndex]
+	cp HM01
+	jr c, .notMachine
+	add sp, 8
+	jp GetMachineName
+
+.notMachine
 	; 2-7 = other names
 	ld a, [wPredefBank]
 	ldh [hLoadedROMBank], a

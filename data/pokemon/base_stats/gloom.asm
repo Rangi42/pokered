@@ -1,4 +1,5 @@
-	db DEX_GLOOM ; pokedex id
+GloomBaseStats::
+	dw DEX_GLOOM ; pokedex id
 
 	db  60,  65,  70,  40,  85
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     BIDE,         REST,         SUBSTITUTE,   CUT
 	; end
 
-	db 0 ; padding
+	db BANK(GloomPicFront)
+	assert BANK(GloomPicFront) == BANK(GloomPicBack)

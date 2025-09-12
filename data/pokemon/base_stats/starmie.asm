@@ -1,4 +1,5 @@
-	db DEX_STARMIE ; pokedex id
+StarmieBaseStats::
+	dw DEX_STARMIE ; pokedex id
 
 	db  60,  75,  85, 115, 100
 	;   hp  atk  def  spd  spc
@@ -22,4 +23,5 @@
 	     FLASH
 	; end
 
-	db 0 ; padding
+	db BANK(StarmiePicFront)
+	assert BANK(StarmiePicFront) == BANK(StarmiePicBack)

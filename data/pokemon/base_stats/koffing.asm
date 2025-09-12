@@ -1,4 +1,5 @@
-	db DEX_KOFFING ; pokedex id
+KoffingBaseStats::
+	dw DEX_KOFFING ; pokedex id
 
 	db  40,  65,  95,  35,  60
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     EXPLOSION,    SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(KoffingPicFront)
+	assert BANK(KoffingPicFront) == BANK(KoffingPicBack)

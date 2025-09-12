@@ -1,4 +1,5 @@
-	db DEX_GENGAR ; pokedex id
+GengarBaseStats::
+	dw DEX_GENGAR ; pokedex id
 
 	db  60,  65,  60, 110, 130
 	;   hp  atk  def  spd  spc
@@ -22,4 +23,5 @@
 	     SUBSTITUTE,   STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(GengarPicFront)
+	assert BANK(GengarPicFront) == BANK(GengarPicBack)

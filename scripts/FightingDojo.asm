@@ -231,7 +231,7 @@ FightingDojoHitmonleePokeBallText:
 	call PrintText
 	jr .done
 .GetMon
-	ld a, HITMONLEE
+	ld bc, HITMONLEE
 	call DisplayPokedex
 	ld hl, .Text
 	call PrintText
@@ -240,7 +240,9 @@ FightingDojoHitmonleePokeBallText:
 	and a
 	jr nz, .done
 	ld a, [wCurPartySpecies]
-	ld b, a
+	ld e, a
+	ld a, [wCurPartySpecies + 1]
+	ld d, a
 	ld c, 30
 	call GivePokemon
 	jr nc, .done
@@ -265,7 +267,7 @@ FightingDojoHitmonchanPokeBallText:
 	call PrintText
 	jr .done
 .GetMon
-	ld a, HITMONCHAN
+	ld bc, HITMONCHAN
 	call DisplayPokedex
 	ld hl, .Text
 	call PrintText
@@ -274,7 +276,9 @@ FightingDojoHitmonchanPokeBallText:
 	and a
 	jr nz, .done
 	ld a, [wCurPartySpecies]
-	ld b, a
+	ld e, a
+	ld a, [wCurPartySpecies + 1]
+	ld d, a
 	ld c, 30
 	call GivePokemon
 	jr nc, .done

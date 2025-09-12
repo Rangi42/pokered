@@ -1,4 +1,5 @@
-	db DEX_DEWGONG ; pokedex id
+DewgongBaseStats::
+	dw DEX_DEWGONG ; pokedex id
 
 	db  90,  70,  80,  70,  95
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SKULL_BASH,   REST,         SUBSTITUTE,   SURF,         STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(DewgongPicFront)
+	assert BANK(DewgongPicFront) == BANK(DewgongPicBack)

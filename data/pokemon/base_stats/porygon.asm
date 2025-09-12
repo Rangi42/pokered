@@ -1,4 +1,5 @@
-	db DEX_PORYGON ; pokedex id
+PorygonBaseStats::
+	dw DEX_PORYGON ; pokedex id
 
 	db  65,  60,  70,  40,  75
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     TRI_ATTACK,   SUBSTITUTE,   FLASH
 	; end
 
-	db 0 ; padding
+	db BANK(PorygonPicFront)
+	assert BANK(PorygonPicFront) == BANK(PorygonPicBack)

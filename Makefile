@@ -13,6 +13,8 @@ rom_obj := \
 	maps.o \
 	ram.o \
 	text.o \
+	data/pokemon/base_stats.o \
+	data/pokemon/evos_moves.o \
 	gfx/pics.o \
 	gfx/sprites.o \
 	gfx/tilesets.o

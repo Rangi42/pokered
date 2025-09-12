@@ -1,4 +1,5 @@
-	db DEX_STARYU ; pokedex id
+StaryuBaseStats::
+	dw DEX_STARYU ; pokedex id
 
 	db  30,  45,  55,  85,  70
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     PSYWAVE,      TRI_ATTACK,   SUBSTITUTE,   SURF,         FLASH
 	; end
 
-	db 0 ; padding
+	db BANK(StaryuPicFront)
+	assert BANK(StaryuPicFront) == BANK(StaryuPicBack)

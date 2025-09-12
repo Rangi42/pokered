@@ -1,38 +1,38 @@
 TitleMons:
 ; mons on the title screen are randomly chosen from here
 IF DEF(_RED)
-	db STARTER1
-	db STARTER2
-	db STARTER3
-	db WEEDLE
-	db NIDORAN_M
-	db SCYTHER
-	db PIKACHU
-	db CLEFAIRY
-	db RHYDON
-	db ABRA
-	db GASTLY
-	db DITTO
-	db PIDGEOTTO
-	db ONIX
-	db PONYTA
-	db MAGIKARP
+	dw STARTER1
+	dw STARTER2
+	dw STARTER3
+	dw WEEDLE
+	dw NIDORAN_M
+	dw SCYTHER
+	dw PIKACHU
+	dw CLEFAIRY
+	dw RHYDON
+	dw ABRA
+	dw GASTLY
+	dw DITTO
+	dw PIDGEOTTO
+	dw ONIX
+	dw PONYTA
+	dw MAGIKARP
 ENDC
 IF DEF(_BLUE)
-	db STARTER2
-	db STARTER1
-	db STARTER3
-	db MANKEY
-	db HITMONLEE
-	db VULPIX
-	db CHANSEY
-	db AERODACTYL
-	db JOLTEON
-	db SNORLAX
-	db GLOOM
-	db POLIWAG
-	db DODUO
-	db PORYGON
-	db GENGAR
-	db RAICHU
+	dw STARTER2
+	dw STARTER1
+	dw STARTER3
+	dw MANKEY
+	dw HITMONLEE
+	dw VULPIX
+	dw CHANSEY
+	dw AERODACTYL
+	dw JOLTEON
+	dw SNORLAX
+	dw GLOOM
+	dw POLIWAG
+	dw DODUO
+	dw PORYGON
+	dw GENGAR
+	dw RAICHU
 ENDC

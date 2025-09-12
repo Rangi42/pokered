@@ -1,4 +1,5 @@
-	db DEX_TENTACOOL ; pokedex id
+TentacoolBaseStats::
+	dw DEX_TENTACOOL ; pokedex id
 
 	db  40,  40,  35,  70, 100
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     REST,         SUBSTITUTE,   CUT,          SURF
 	; end
 
-	db 0 ; padding
+	db BANK(TentacoolPicFront)
+	assert BANK(TentacoolPicFront) == BANK(TentacoolPicBack)

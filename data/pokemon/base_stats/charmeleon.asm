@@ -1,4 +1,5 @@
-	db DEX_CHARMELEON ; pokedex id
+CharmeleonBaseStats::
+	dw DEX_CHARMELEON ; pokedex id
 
 	db  58,  64,  58,  80,  65
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     REST,         SUBSTITUTE,   CUT,          STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(CharmeleonPicFront)
+	assert BANK(CharmeleonPicFront) == BANK(CharmeleonPicBack)

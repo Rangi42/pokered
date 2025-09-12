@@ -1,4 +1,5 @@
-	db DEX_PIDGEOTTO ; pokedex id
+PidgeottoBaseStats::
+	dw DEX_PIDGEOTTO ; pokedex id
 
 	db  63,  60,  55,  71,  50
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     SWIFT,        SKY_ATTACK,   REST,         SUBSTITUTE,   FLY
 	; end
 
-	db 0 ; padding
+	db BANK(PidgeottoPicFront)
+	assert BANK(PidgeottoPicFront) == BANK(PidgeottoPicBack)

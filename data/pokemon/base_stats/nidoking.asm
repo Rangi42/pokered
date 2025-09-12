@@ -1,4 +1,5 @@
-	db DEX_NIDOKING ; pokedex id
+NidokingBaseStats::
+	dw DEX_NIDOKING ; pokedex id
 
 	db  81,  92,  77,  85,  75
 	;   hp  atk  def  spd  spc
@@ -23,4 +24,5 @@
 	     SURF,         STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(NidokingPicFront)
+	assert BANK(NidokingPicFront) == BANK(NidokingPicBack)

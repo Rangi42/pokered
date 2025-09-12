@@ -1,4 +1,5 @@
-	db DEX_PINSIR ; pokedex id
+PinsirBaseStats::
+	dw DEX_PINSIR ; pokedex id
 
 	db  65, 125, 100,  85,  55
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(PinsirPicFront)
+	assert BANK(PinsirPicFront) == BANK(PinsirPicBack)
