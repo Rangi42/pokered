@@ -1,4 +1,5 @@
-	db DEX_VAPOREON ; pokedex id
+VaporeonBaseStats::
+	dw DEX_VAPOREON ; pokedex id
 
 	db 130,  65,  60,  65, 110
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SKULL_BASH,   REST,         SUBSTITUTE,   SURF
 	; end
 
-	db 0 ; padding
+	db BANK(VaporeonPicFront)
+	assert BANK(VaporeonPicFront) == BANK(VaporeonPicBack)

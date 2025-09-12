@@ -41,61 +41,61 @@ SuperRodData:
 
 .Group1:
 	db 2
-	db 15, TENTACOOL
-	db 15, POLIWAG
+	dbw 15, TENTACOOL
+	dbw 15, POLIWAG
 
 .Group2:
 	db 2
-	db 15, GOLDEEN
-	db 15, POLIWAG
+	dbw 15, GOLDEEN
+	dbw 15, POLIWAG
 
 .Group3:
 	db 3
-	db 15, PSYDUCK
-	db 15, GOLDEEN
-	db 15, KRABBY
+	dbw 15, PSYDUCK
+	dbw 15, GOLDEEN
+	dbw 15, KRABBY
 
 .Group4:
 	db 2
-	db 15, KRABBY
-	db 15, SHELLDER
+	dbw 15, KRABBY
+	dbw 15, SHELLDER
 
 .Group5:
 	db 2
-	db 23, POLIWHIRL
-	db 15, SLOWPOKE
+	dbw 23, POLIWHIRL
+	dbw 15, SLOWPOKE
 
 .Group6:
 	db 4
-	db 15, DRATINI
-	db 15, KRABBY
-	db 15, PSYDUCK
-	db 15, SLOWPOKE
+	dbw 15, DRATINI
+	dbw 15, KRABBY
+	dbw 15, PSYDUCK
+	dbw 15, SLOWPOKE
 
 .Group7:
 	db 4
-	db 5, TENTACOOL
-	db 15, KRABBY
-	db 15, GOLDEEN
-	db 15, MAGIKARP
+	dbw 5, TENTACOOL
+	dbw 15, KRABBY
+	dbw 15, GOLDEEN
+	dbw 15, MAGIKARP
 
 .Group8:
 	db 4
-	db 15, STARYU
-	db 15, HORSEA
-	db 15, SHELLDER
-	db 15, GOLDEEN
+	dbw 15, STARYU
+	dbw 15, HORSEA
+	dbw 15, SHELLDER
+	dbw 15, GOLDEEN
 
 .Group9:
 	db 4
-	db 23, SLOWBRO
-	db 23, SEAKING
-	db 23, KINGLER
-	db 23, SEADRA
+	dbw 23, SLOWBRO
+	dbw 23, SEAKING
+	dbw 23, KINGLER
+	dbw 23, SEADRA
 
 .Group10:
 	db 4
-	db 23, SEAKING
-	db 15, KRABBY
-	db 15, GOLDEEN
-	db 15, MAGIKARP
+	dbw 23, SEAKING
+	dbw 15, KRABBY
+	dbw 15, GOLDEEN
+	dbw 15, MAGIKARP

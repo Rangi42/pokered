@@ -30,8 +30,10 @@ Route12DefaultScript:
 	ld a, TEXT_ROUTE12_SNORLAX_WOKE_UP
 	ldh [hTextID], a
 	call DisplayTextID
-	ld a, SNORLAX
+	ld a, LOW(SNORLAX)
 	ld [wCurOpponent], a
+	ld a, HIGH(SNORLAX)
+	ld [wCurOpponent + 1], a
 	ld a, 30
 	ld [wCurEnemyLevel], a
 	ld a, HS_ROUTE_12_SNORLAX

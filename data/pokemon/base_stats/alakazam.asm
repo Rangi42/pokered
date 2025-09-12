@@ -1,4 +1,5 @@
-	db DEX_ALAKAZAM ; pokedex id
+AlakazamBaseStats::
+	dw DEX_ALAKAZAM ; pokedex id
 
 	db  55,  50,  45, 120, 135
 	;   hp  atk  def  spd  spc
@@ -22,4 +23,5 @@
 	     FLASH
 	; end
 
-	db 0 ; padding
+	db BANK(AlakazamPicFront)
+	assert BANK(AlakazamPicFront) == BANK(AlakazamPicBack)

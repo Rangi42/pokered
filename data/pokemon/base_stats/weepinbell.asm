@@ -1,4 +1,5 @@
-	db DEX_WEEPINBELL ; pokedex id
+WeepinbellBaseStats::
+	dw DEX_WEEPINBELL ; pokedex id
 
 	db  65,  90,  50,  55,  85
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     BIDE,         REST,         SUBSTITUTE,   CUT
 	; end
 
-	db 0 ; padding
+	db BANK(WeepinbellPicFront)
+	assert BANK(WeepinbellPicFront) == BANK(WeepinbellPicBack)

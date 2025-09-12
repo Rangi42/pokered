@@ -1,4 +1,5 @@
-	db DEX_AERODACTYL ; pokedex id
+AerodactylBaseStats::
+	dw DEX_AERODACTYL ; pokedex id
 
 	db  80, 105,  65, 130,  60
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     REST,         SUBSTITUTE,   FLY
 	; end
 
-	db 0 ; padding
+	db BANK(AerodactylPicFront)
+	assert BANK(AerodactylPicFront) == BANK(AerodactylPicBack)

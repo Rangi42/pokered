@@ -1,4 +1,5 @@
-	db DEX_POLIWAG ; pokedex id
+PoliwagBaseStats::
+	dw DEX_POLIWAG ; pokedex id
 
 	db  40,  50,  40,  90,  40
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     PSYWAVE,      SUBSTITUTE,   SURF
 	; end
 
-	db 0 ; padding
+	db BANK(PoliwagPicFront)
+	assert BANK(PoliwagPicFront) == BANK(PoliwagPicBack)

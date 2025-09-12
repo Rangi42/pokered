@@ -1,4 +1,5 @@
-	db DEX_ARCANINE ; pokedex id
+ArcanineBaseStats::
+	dw DEX_ARCANINE ; pokedex id
 
 	db  90, 110,  80,  95,  80
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SKULL_BASH,   REST,         SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(ArcaninePicFront)
+	assert BANK(ArcaninePicFront) == BANK(ArcaninePicBack)

@@ -12,13 +12,22 @@ _RemovePokemon::
 	ld c, a
 	ld b, $0
 	add hl, bc
+	add hl, bc
 	ld e, l
 	ld d, h
+	inc de
 	inc de
 .shiftMonSpeciesLoop
 	ld a, [de]
 	inc de
 	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, [hli]
+	inc a ; reached terminator?
+	ld a, [hld]
+	jr nz, .shiftMonSpeciesLoop ; if not, continue shifting species
 	inc a ; reached terminator?
 	jr nz, .shiftMonSpeciesLoop ; if not, continue shifting species
 	ld hl, wPartyMonOT
