@@ -16,6 +16,8 @@ _AddPartyMon::
 	ld [de], a
 	ld a, [de]
 	ldh [hNewPartyLength], a
+	sla a
+	dec de
 	add e
 	ld e, a
 	jr nc, .noCarry
@@ -24,7 +26,12 @@ _AddPartyMon::
 	ld a, [wCurPartySpecies]
 	ld [de], a ; write species of new mon in party list
 	inc de
+	ld a, [wCurPartySpecies + 1]
+	ld [de], a
+	inc de
 	ld a, $ff ; terminator
+	ld [de], a
+	inc de
 	ld [de], a
 	ld hl, wPartyMonOT
 	ld a, [wMonDataLocation]
@@ -66,10 +73,15 @@ _AddPartyMon::
 	push hl
 	ld a, [wCurPartySpecies]
 	ld [wCurSpecies], a
+	ld a, [wCurPartySpecies + 1]
+	ld [wCurSpecies + 1], a
 	call GetMonHeader
 	ld hl, wMonHeader
 	ld a, [hli]
 	ld [de], a ; species
+	inc de
+	ld a, [hl]
+	ld [de], a
 	inc de
 	pop hl
 	push hl
@@ -82,27 +94,33 @@ _AddPartyMon::
 ; If the mon is being added to the player's party, update the pokedex.
 	ld a, [wCurPartySpecies]
 	ld [wPokedexNum], a
+	ld a, [wCurPartySpecies + 1]
+	ld [wPokedexNum + 1], a
 	push de
 	predef IndexToPokedex
 	pop de
+	push de
 	ld a, [wPokedexNum]
-	dec a
-	ld c, a
-	ld b, FLAG_TEST
+	ld e, a
+	ld a, [wPokedexNum + 1]
+	ld d, a
+	dec de
 	ld hl, wPokedexOwned
-	call FlagAction
+	call Test16BitFlag
 	ld a, c ; whether the mon was already flagged as owned
 	ld [wUnusedAlreadyOwnedFlag], a
 	ld a, [wPokedexNum]
-	dec a
-	ld c, a
-	ld b, FLAG_SET
-	push bc
-	call FlagAction
-	pop bc
-	ld hl, wPokedexSeen
-	call FlagAction
+	ld e, a
+	ld a, [wPokedexNum + 1]
+	ld d, a
+	dec de
+	ld hl, wPokedexOwned
+	call Set16BitFlag
 
+	ld hl, wPokedexSeen
+	call Set16BitFlag
+
+	pop de
 	pop hl
 	push hl
 
@@ -288,8 +306,11 @@ _AddEnemyMonToPlayerParty::
 	ld c, a
 	ld b, $0
 	add hl, bc
+	add hl, bc
 	ld a, [wCurPartySpecies]
 	ld [hli], a      ; add mon as last list entry
+	ld a, [wCurPartySpecies + 1]
+	ld [hli], a
 	ld [hl], $ff     ; write new sentinel
 	ld hl, wPartyMons
 	ld a, [wPartyCount]
@@ -324,17 +345,18 @@ _AddEnemyMonToPlayerParty::
 	call CopyData    ; write new mon's nickname (from an enemy mon)
 	ld a, [wCurPartySpecies]
 	ld [wPokedexNum], a
+	ld a, [wCurPartySpecies + 1]
+	ld [wPokedexNum + 1], a
 	predef IndexToPokedex
 	ld a, [wPokedexNum]
-	dec a
-	ld c, a
-	ld b, FLAG_SET
+	ld e, a
+	ld a, [wPokedexNum + 1]
+	ld d, a
+	dec de
 	ld hl, wPokedexOwned
-	push bc
-	call FlagAction ; add to owned pokemon
-	pop bc
+	call Set16BitFlag
 	ld hl, wPokedexSeen
-	call FlagAction ; add to seen pokemon
+	call Set16BitFlag ; add to seen pokemon
 	and a
 	ret                  ; return success
 
@@ -363,18 +385,31 @@ _MoveMon::
 	ret
 .partyOrBoxNotFull
 	inc a
-	ld [hl], a           ; increment number of mons in party/box
+	ld [hli], a          ; increment number of mons in party/box
+	dec a
 	ld c, a
 	ld b, 0
+	add hl, bc
 	add hl, bc
 	ld a, [wMoveMonType]
 	cp DAYCARE_TO_PARTY
 	ld a, [wDayCareMon]
+	ld c, a
+	ld a, [wDayCareMon + 1]
+	ld b, a
 	jr z, .copySpecies
 	ld a, [wCurPartySpecies]
+	ld c, a
+	ld a, [wCurPartySpecies + 1]
+	ld b, a
 .copySpecies
+	ld a, c
 	ld [hli], a          ; write new mon ID
+	ld a, b
+	ld [hli], a
 	ld [hl], $ff         ; write new sentinel
+	inc hl
+	ld [hl], $ff
 ; find mon data dest
 	ld a, [wMoveMonType]
 	dec a
@@ -421,6 +456,7 @@ _MoveMon::
 	ld bc, BOXMON_STRUCT_LENGTH
 	add hl, bc
 	ld a, [hl] ; hl = Level
+	inc de
 	inc de
 	inc de
 	inc de

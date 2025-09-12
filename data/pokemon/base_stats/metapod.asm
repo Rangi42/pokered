@@ -1,4 +1,5 @@
-	db DEX_METAPOD ; pokedex id
+MetapodBaseStats::
+	dw DEX_METAPOD ; pokedex id
 
 	db  50,  20,  55,  30,  25
 	;   hp  atk  def  spd  spc
@@ -17,4 +18,5 @@
 	tmhm
 	; end
 
-	db 0 ; padding
+	db BANK(MetapodPicFront)
+	assert BANK(MetapodPicFront) == BANK(MetapodPicBack)

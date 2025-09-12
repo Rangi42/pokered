@@ -1,4 +1,5 @@
-	db DEX_ODDISH ; pokedex id
+OddishBaseStats::
+	dw DEX_ODDISH ; pokedex id
 
 	db  45,  50,  55,  30,  75
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     BIDE,         REST,         SUBSTITUTE,   CUT
 	; end
 
-	db 0 ; padding
+	db BANK(OddishPicFront)
+	assert BANK(OddishPicFront) == BANK(OddishPicBack)

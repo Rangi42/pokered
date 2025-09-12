@@ -1,4 +1,5 @@
-	db DEX_MOLTRES ; pokedex id
+MoltresBaseStats::
+	dw DEX_MOLTRES ; pokedex id
 
 	db  90, 100,  90,  90, 125
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SUBSTITUTE,   FLY
 	; end
 
-	db 0 ; padding
+	db BANK(MoltresPicFront)
+	assert BANK(MoltresPicFront) == BANK(MoltresPicBack)

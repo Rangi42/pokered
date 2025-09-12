@@ -1,4 +1,5 @@
-	db DEX_PSYDUCK ; pokedex id
+PsyduckBaseStats::
+	dw DEX_PSYDUCK ; pokedex id
 
 	db  50,  52,  48,  55,  50
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     SKULL_BASH,   REST,         SUBSTITUTE,   SURF,         STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(PsyduckPicFront)
+	assert BANK(PsyduckPicFront) == BANK(PsyduckPicBack)

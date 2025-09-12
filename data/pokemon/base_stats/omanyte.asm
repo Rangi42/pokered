@@ -1,4 +1,5 @@
-	db DEX_OMANYTE ; pokedex id
+OmanyteBaseStats::
+	dw DEX_OMANYTE ; pokedex id
 
 	db  35,  40, 100,  35,  90
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SURF
 	; end
 
-	db 0 ; padding
+	db BANK(OmanytePicFront)
+	assert BANK(OmanytePicFront) == BANK(OmanytePicBack)

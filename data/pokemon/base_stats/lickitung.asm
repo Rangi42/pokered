@@ -1,4 +1,5 @@
-	db DEX_LICKITUNG ; pokedex id
+LickitungBaseStats::
+	dw DEX_LICKITUNG ; pokedex id
 
 	db  90,  55,  75,  30,  60
 	;   hp  atk  def  spd  spc
@@ -22,4 +23,5 @@
 	     REST,         SUBSTITUTE,   CUT,          SURF,         STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(LickitungPicFront)
+	assert BANK(LickitungPicFront) == BANK(LickitungPicBack)

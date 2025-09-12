@@ -1,4 +1,5 @@
-	db DEX_SANDSHREW ; pokedex id
+SandshrewBaseStats::
+	dw DEX_SANDSHREW ; pokedex id
 
 	db  50,  75,  85,  40,  30
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(SandshrewPicFront)
+	assert BANK(SandshrewPicFront) == BANK(SandshrewPicBack)

@@ -1,4 +1,5 @@
-	db DEX_BEEDRILL ; pokedex id
+BeedrillBaseStats::
+	dw DEX_BEEDRILL ; pokedex id
 
 	db  65,  80,  40,  75,  45
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     CUT
 	; end
 
-	db 0 ; padding
+	db BANK(BeedrillPicFront)
+	assert BANK(BeedrillPicFront) == BANK(BeedrillPicBack)

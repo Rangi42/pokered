@@ -1,4 +1,5 @@
-	db DEX_MACHOKE ; pokedex id
+MachokeBaseStats::
+	dw DEX_MACHOKE ; pokedex id
 
 	db  80, 100,  70,  45,  50
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     ROCK_SLIDE,   SUBSTITUTE,   STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(MachokePicFront)
+	assert BANK(MachokePicFront) == BANK(MachokePicBack)

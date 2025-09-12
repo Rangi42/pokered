@@ -1,4 +1,5 @@
-	db DEX_NIDOQUEEN ; pokedex id
+NidoqueenBaseStats::
+	dw DEX_NIDOQUEEN ; pokedex id
 
 	db  90,  82,  87,  76,  75
 	;   hp  atk  def  spd  spc
@@ -23,4 +24,5 @@
 	     SURF,         STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(NidoqueenPicFront)
+	assert BANK(NidoqueenPicFront) == BANK(NidoqueenPicBack)

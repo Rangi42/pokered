@@ -1,4 +1,5 @@
-	db DEX_VULPIX ; pokedex id
+VulpixBaseStats::
+	dw DEX_VULPIX ; pokedex id
 
 	db  38,  41,  40,  65,  65
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     FIRE_BLAST,   SWIFT,        SKULL_BASH,   REST,         SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(VulpixPicFront)
+	assert BANK(VulpixPicFront) == BANK(VulpixPicBack)

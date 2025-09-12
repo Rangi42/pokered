@@ -1,4 +1,5 @@
-	db DEX_PARAS ; pokedex id
+ParasBaseStats::
+	dw DEX_PARAS ; pokedex id
 
 	db  35,  70,  55,  25,  55
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SUBSTITUTE,   CUT
 	; end
 
-	db 0 ; padding
+	db BANK(ParasPicFront)
+	assert BANK(ParasPicFront) == BANK(ParasPicBack)

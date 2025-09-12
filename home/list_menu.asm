@@ -112,9 +112,12 @@ DisplayListMenuIDLoop::
 	ld [wWhichPokemon], a
 	ld a, [wListMenuID]
 	cp ITEMLISTMENU
+	jr z, .multiply
+	cp PCPOKEMONLISTMENU
 	jr nz, .skipMultiplying
-; if it's an item menu
-	sla c ; item entries are 2 bytes long, so multiply by 2
+; if it's an item or pokemon menu
+.multiply
+	sla c ; entries are 2 bytes long, so multiply by 2
 .skipMultiplying
 	ld a, [wListPointer]
 	ld l, a
@@ -123,8 +126,10 @@ DisplayListMenuIDLoop::
 	inc hl ; hl = beginning of list entries
 	ld b, 0
 	add hl, bc
-	ld a, [hl]
+	ld a, [hli]
 	ld [wCurListMenuItem], a
+	ld a, [hld]
+	ld [wCurListMenuItem + 1], a
 	ld a, [wListMenuID]
 	and a ; PCPOKEMONLISTMENU?
 	jr z, .pokemonList
@@ -349,13 +354,17 @@ PrintListMenuEntries::
 	ld c, a
 	ld a, [wListMenuID]
 	cp ITEMLISTMENU
-	ld a, c
+	jr z, .multiply
+	cp PCPOKEMONLISTMENU
 	jr nz, .skipMultiplying
-; if it's an item menu
-; item entries are 2 bytes long, so multiply by 2
+; if it's an item or pokemon menu
+; entries are 2 bytes long, so multiply by 2
+.multiply
+	ld a, c
 	sla a
 	sla c
 .skipMultiplying
+	ld a, c
 	add e
 	ld e, a
 	jr nc, .noCarry
@@ -369,7 +378,21 @@ PrintListMenuEntries::
 	ld a, [de]
 	ld [wNamedObjectIndex], a
 	cp $ff
+	inc de
+	jp nz, .notDone
+	ld a, [wListMenuID]
+	cp PCPOKEMONLISTMENU
+	jp nz, .printCancelMenuItem
+	ld a, [de]
+	ld [wNamedObjectIndex + 1], a
+	cp $ff
 	jp z, .printCancelMenuItem
+	jr .ok
+.notDone
+	ld a, [de]
+	ld [wNamedObjectIndex + 1], a
+.ok
+	dec de
 	push bc
 	push de
 	push hl
@@ -466,6 +489,10 @@ PrintListMenuEntries::
 	pop de
 	inc de
 	ld a, [wListMenuID]
+	cp PCPOKEMONLISTMENU
+	jr nz, .notPC
+	inc de
+.notPC
 	cp ITEMLISTMENU
 	jr nz, .nextListEntry
 ; print item quantity
