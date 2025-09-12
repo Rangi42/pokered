@@ -13,12 +13,13 @@ PlayBattleMusic::
 	ld a, MUSIC_GYM_LEADER_BATTLE
 	jr .playSong
 .notGymLeaderBattle
+	ld a, [wCurOpponent + 1]
+	cp $ff
+	jr nz, .wildBattle
 	ld a, [wCurOpponent]
-	cp OPP_ID_OFFSET
-	jr c, .wildBattle
-	cp OPP_RIVAL3
+	cp RIVAL3
 	jr z, .finalBattle
-	cp OPP_LANCE
+	cp LANCE
 	jr nz, .normalTrainerBattle
 	ld a, MUSIC_GYM_LEADER_BATTLE ; lance also plays gym leader theme
 	jr .playSong

@@ -1,4 +1,5 @@
-	db DEX_GOLDEEN ; pokedex id
+GoldeenBaseStats::
+	dw DEX_GOLDEEN ; pokedex id
 
 	db  45,  67,  60,  63,  50
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SUBSTITUTE,   SURF
 	; end
 
-	db 0 ; padding
+	db BANK(GoldeenPicFront)
+	assert BANK(GoldeenPicFront) == BANK(GoldeenPicBack)

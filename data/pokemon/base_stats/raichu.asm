@@ -1,4 +1,5 @@
-	db DEX_RAICHU ; pokedex id
+RaichuBaseStats::
+	dw DEX_RAICHU ; pokedex id
 
 	db  60,  90,  55, 100,  90
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     THUNDER_WAVE, SUBSTITUTE,   FLASH
 	; end
 
-	db 0 ; padding
+	db BANK(RaichuPicFront)
+	assert BANK(RaichuPicFront) == BANK(RaichuPicBack)

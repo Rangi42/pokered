@@ -1,4 +1,5 @@
-	db DEX_SQUIRTLE ; pokedex id
+SquirtleBaseStats::
+	dw DEX_SQUIRTLE ; pokedex id
 
 	db  44,  48,  65,  43,  50
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     REST,         SUBSTITUTE,   SURF,         STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(SquirtlePicFront)
+	assert BANK(SquirtlePicFront) == BANK(SquirtlePicBack)

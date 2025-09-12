@@ -64,6 +64,9 @@ OverworldLoopLessDelay::
 	ld a, [wCurOpponent]
 	and a
 	jp nz, .newBattle
+	ld a, [wCurOpponent + 1]
+	and a
+	jp nz, .newBattle
 	ld a, [wStatusFlags5]
 	bit BIT_SCRIPTED_MOVEMENT_STATE, a
 	jr z, .notSimulating
@@ -126,6 +129,9 @@ OverworldLoopLessDelay::
 	jp EnterMap
 .checkForOpponent
 	ld a, [wCurOpponent]
+	and a
+	jp nz, .newBattle
+	ld a, [wCurOpponent + 1]
 	and a
 	jp nz, .newBattle
 	jp OverworldLoop
@@ -2207,14 +2213,20 @@ LoadMapHeader::
 	ld a, [hli]
 	ldh [hLoadSpriteTemp1], a ; save trainer class
 	ld a, [hli]
+	ldh [hLoadSpriteTemp1 + 1], a ; save trainer class
+	ld a, [hli]
 	ldh [hLoadSpriteTemp2], a ; save trainer number (within class)
 	push hl
 	ld hl, wMapSpriteExtraData
 	add hl, bc
+	srl c
+	add hl, bc
 	ldh a, [hLoadSpriteTemp1]
 	ld [hli], a ; store trainer class in byte 0 of the entry
+	ldh a, [hLoadSpriteTemp1 + 1]
+	ld [hli], a ; store trainer class in byte 1 of the entry
 	ldh a, [hLoadSpriteTemp2]
-	ld [hl], a ; store trainer number in byte 1 of the entry
+	ld [hl], a ; store trainer number in byte 2 of the entry
 	pop hl
 	jr .nextSprite
 .itemBallSprite
@@ -2222,6 +2234,8 @@ LoadMapHeader::
 	ldh [hLoadSpriteTemp1], a ; save item number
 	push hl
 	ld hl, wMapSpriteExtraData
+	add hl, bc
+	srl c
 	add hl, bc
 	ldh a, [hLoadSpriteTemp1]
 	ld [hli], a ; store item number in byte 0 of the entry
@@ -2233,8 +2247,11 @@ LoadMapHeader::
 	push hl
 	ld hl, wMapSpriteExtraData
 	add hl, bc
-; zero both bytes, since regular sprites don't use this extra space
+	srl c
+	add hl, bc
+; zero all three bytes, since regular sprites don't use this extra space
 	xor a
+	ld [hli], a
 	ld [hli], a
 	ld [hl], a
 	pop hl

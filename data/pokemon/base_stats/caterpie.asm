@@ -1,4 +1,5 @@
-	db DEX_CATERPIE ; pokedex id
+CaterpieBaseStats::
+	dw DEX_CATERPIE ; pokedex id
 
 	db  45,  30,  35,  45,  20
 	;   hp  atk  def  spd  spc
@@ -17,4 +18,5 @@
 	tmhm
 	; end
 
-	db 0 ; padding
+	db BANK(CaterpiePicFront)
+	assert BANK(CaterpiePicFront) == BANK(CaterpiePicBack)

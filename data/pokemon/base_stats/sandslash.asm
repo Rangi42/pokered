@@ -1,4 +1,5 @@
-	db DEX_SANDSLASH ; pokedex id
+SandslashBaseStats::
+	dw DEX_SANDSLASH ; pokedex id
 
 	db  75, 100, 110,  65,  55
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     CUT,          STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(SandslashPicFront)
+	assert BANK(SandslashPicFront) == BANK(SandslashPicBack)

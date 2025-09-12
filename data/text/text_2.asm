@@ -120,10 +120,10 @@ _YeahText::
 
 _DexSeenOwnedText::
 	text "#DEX   Seen:@"
-	text_decimal wDexRatingNumMonsSeen, 1, 3
+	text_decimal wDexRatingNumMonsSeen, 2, 3
 	text_start
 	line "         Owned:@"
-	text_decimal wDexRatingNumMonsOwned, 1, 3
+	text_decimal wDexRatingNumMonsOwned, 2, 3
 	text_end
 
 _DexRatingText::
