@@ -16,8 +16,10 @@ GiveItem::
 	ret
 
 GivePokemon::
-; Give the player monster b at level c.
-	ld a, b
+; Give the player monster de at level c.
+	ld a, d
+	ld [wCurPartySpecies + 1], a
+	ld a, e
 	ld [wCurPartySpecies], a
 	ld a, c
 	ld [wCurEnemyLevel], a

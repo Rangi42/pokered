@@ -1,4 +1,5 @@
-	db DEX_DODRIO ; pokedex id
+DodrioBaseStats::
+	dw DEX_DODRIO ; pokedex id
 
 	db  60, 110,  70, 100,  60
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SUBSTITUTE,   FLY
 	; end
 
-	db 0 ; padding
+	db BANK(DodrioPicFront)
+	assert BANK(DodrioPicFront) == BANK(DodrioPicBack)

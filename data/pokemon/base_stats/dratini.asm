@@ -1,4 +1,5 @@
-	db DEX_DRATINI ; pokedex id
+DratiniBaseStats::
+	dw DEX_DRATINI ; pokedex id
 
 	db  41,  64,  45,  50,  50
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     THUNDER_WAVE, SUBSTITUTE,   SURF
 	; end
 
-	db 0 ; padding
+	db BANK(DratiniPicFront)
+	assert BANK(DratiniPicFront) == BANK(DratiniPicBack)

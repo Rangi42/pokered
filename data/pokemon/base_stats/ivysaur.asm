@@ -1,4 +1,5 @@
-	db DEX_IVYSAUR ; pokedex id
+IvysaurBaseStats::
+	dw DEX_IVYSAUR ; pokedex id
 
 	db  60,  62,  63,  60,  80
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     REFLECT,      BIDE,         REST,         SUBSTITUTE,   CUT
 	; end
 
-	db 0 ; padding
+	db BANK(IvysaurPicFront)
+	assert BANK(IvysaurPicFront) == BANK(IvysaurPicBack)

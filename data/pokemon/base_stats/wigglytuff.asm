@@ -1,4 +1,5 @@
-	db DEX_WIGGLYTUFF ; pokedex id
+WigglytuffBaseStats::
+	dw DEX_WIGGLYTUFF ; pokedex id
 
 	db 140,  70,  45,  45,  50
 	;   hp  atk  def  spd  spc
@@ -23,4 +24,5 @@
 	     SUBSTITUTE,   STRENGTH,     FLASH
 	; end
 
-	db 0 ; padding
+	db BANK(WigglytuffPicFront)
+	assert BANK(WigglytuffPicFront) == BANK(WigglytuffPicBack)

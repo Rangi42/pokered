@@ -1,4 +1,5 @@
-	db DEX_ELECTABUZZ ; pokedex id
+ElectabuzzBaseStats::
+	dw DEX_ELECTABUZZ ; pokedex id
 
 	db  65,  83,  57, 105,  85
 	;   hp  atk  def  spd  spc
@@ -22,4 +23,5 @@
 	     SUBSTITUTE,   STRENGTH,     FLASH
 	; end
 
-	db 0 ; padding
+	db BANK(ElectabuzzPicFront)
+	assert BANK(ElectabuzzPicFront) == BANK(ElectabuzzPicBack)

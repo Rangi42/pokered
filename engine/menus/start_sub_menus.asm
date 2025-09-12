@@ -725,17 +725,33 @@ SwitchPartyMon_InitVarOrSwapData:
 	ld d, h
 	ld e, l
 	ld a, [wCurrentMenuItem]
-	add l
-	ld l, a
-	jr nc, .noCarry
-	inc h
-.noCarry
+	push bc
+	ld c, a
+	ld b, 0
+	add hl, bc
+	add hl, bc
+	pop bc
+	push hl
+	push bc
 	ld a, [wMenuItemToSwap]
-	add e
-	ld e, a
-	jr nc, .noCarry2
-	inc d
-.noCarry2
+	ld c, a
+	ld b, 0
+	ld h, d
+	ld l, e
+	add hl, bc
+	add hl, bc
+	ld d, h
+	ld e, l
+	pop bc
+	pop hl
+	ld a, [hl]
+	ldh [hSwapTemp], a
+	ld a, [de]
+	ld [hl], a
+	ldh a, [hSwapTemp]
+	ld [de], a
+	inc hl
+	inc de
 	ld a, [hl]
 	ldh [hSwapTemp], a
 	ld a, [de]
