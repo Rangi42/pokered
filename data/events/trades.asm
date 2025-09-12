@@ -1,12 +1,13 @@
 MACRO npctrade
 ; give mon, get mon, dialog id, nickname
-	db \1, \2, \3
+	dw \1, \2
+	db \3
 	dname \4, NAME_LENGTH
 ENDM
 
 TradeMons:
 ; entries correspond to TRADE_FOR_* constants
-	table_width 3 + NAME_LENGTH
+	table_width 5 + NAME_LENGTH
 	; The two instances of TRADE_DIALOGSET_EVOLUTION are a leftover
 	; from the Japanese Blue trades, which used species that evolve.
 	; TRADE_DIALOGSET_EVOLUTION did not refer to evolution in Japanese

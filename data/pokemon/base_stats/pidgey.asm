@@ -1,4 +1,5 @@
-	db DEX_PIDGEY ; pokedex id
+PidgeyBaseStats::
+	dw DEX_PIDGEY ; pokedex id
 
 	db  40,  45,  40,  56,  35
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     SWIFT,        SKY_ATTACK,   REST,         SUBSTITUTE,   FLY
 	; end
 
-	db 0 ; padding
+	db BANK(PidgeyPicFront)
+	assert BANK(PidgeyPicFront) == BANK(PidgeyPicBack)

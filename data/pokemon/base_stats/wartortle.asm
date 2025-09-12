@@ -1,4 +1,5 @@
-	db DEX_WARTORTLE ; pokedex id
+WartortleBaseStats::
+	dw DEX_WARTORTLE ; pokedex id
 
 	db  59,  63,  80,  58,  65
 	;   hp  atk  def  spd  spc
@@ -21,4 +22,5 @@
 	     REST,         SUBSTITUTE,   SURF,         STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(WartortlePicFront)
+	assert BANK(WartortlePicFront) == BANK(WartortlePicBack)

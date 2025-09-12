@@ -159,7 +159,7 @@ SeafoamIslandsB4FArticunoText:
 SeafoamIslandsB4FArticunoBattleText:
 	text_far _SeafoamIslandsB4FArticunoBattleText
 	text_asm
-	ld a, ARTICUNO
+	ld bc, ARTICUNO
 	call PlayCry
 	call WaitForSoundToFinish
 	jp TextScriptEnd

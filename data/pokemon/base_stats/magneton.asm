@@ -1,4 +1,5 @@
-	db DEX_MAGNETON ; pokedex id
+MagnetonBaseStats::
+	dw DEX_MAGNETON ; pokedex id
 
 	db  50,  60,  95,  70, 120
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SUBSTITUTE,   FLASH
 	; end
 
-	db 0 ; padding
+	db BANK(MagnetonPicFront)
+	assert BANK(MagnetonPicFront) == BANK(MagnetonPicBack)

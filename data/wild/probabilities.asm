@@ -4,7 +4,7 @@ DEF wild_chance_total = 0
 MACRO wild_chance
 	DEF wild_chance_total += \1
 	db wild_chance_total - 1
-	db wild_chance_slot * 2
+	db wild_chance_slot * 3
 	DEF wild_chance_slot += 1
 ENDM
 

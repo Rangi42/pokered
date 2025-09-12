@@ -56,6 +56,9 @@ TransformEffect_:
 	push hl
 ; transform user into opposing Pokemon
 ; species
+	ld a, [hli]
+	ld [de], a
+	inc de
 	ld a, [hl]
 	ld [de], a
 ; type 1, type 2, catch rate, and moves
@@ -121,8 +124,10 @@ TransformEffect_:
 .copyStats
 ; original (unmodified) stats and stat mods
 	pop hl
-	ld a, [hl]
+	ld a, [hli]
 	ld [wNamedObjectIndex], a
+	ld a, [hl]
+	ld [wNamedObjectIndex + 1], a
 	call GetMonName
 	ld hl, wEnemyMonUnmodifiedAttack
 	ld de, wPlayerMonUnmodifiedAttack

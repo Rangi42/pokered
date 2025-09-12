@@ -1,4 +1,5 @@
-	db DEX_BUTTERFREE ; pokedex id
+ButterfreeBaseStats::
+	dw DEX_BUTTERFREE ; pokedex id
 
 	db  60,  45,  50,  70,  80
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     SWIFT,        REST,         PSYWAVE,      SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(ButterfreePicFront)
+	assert BANK(ButterfreePicFront) == BANK(ButterfreePicBack)

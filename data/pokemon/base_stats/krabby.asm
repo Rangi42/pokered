@@ -1,4 +1,5 @@
-	db DEX_KRABBY ; pokedex id
+KrabbyBaseStats::
+	dw DEX_KRABBY ; pokedex id
 
 	db  30, 105,  90,  50,  25
 	;   hp  atk  def  spd  spc
@@ -20,4 +21,5 @@
 	     CUT,          SURF,         STRENGTH
 	; end
 
-	db 0 ; padding
+	db BANK(KrabbyPicFront)
+	assert BANK(KrabbyPicFront) == BANK(KrabbyPicBack)

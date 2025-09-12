@@ -1,4 +1,5 @@
-	db DEX_CHANSEY ; pokedex id
+ChanseyBaseStats::
+	dw DEX_CHANSEY ; pokedex id
 
 	db 250,   5,   5,  50, 105
 	;   hp  atk  def  spd  spc
@@ -24,4 +25,5 @@
 	     FLASH
 	; end
 
-	db 0 ; padding
+	db BANK(ChanseyPicFront)
+	assert BANK(ChanseyPicFront) == BANK(ChanseyPicBack)

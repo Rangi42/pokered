@@ -1,4 +1,5 @@
-	db DEX_VENONAT ; pokedex id
+VenonatBaseStats::
+	dw DEX_VENONAT ; pokedex id
 
 	db  60,  55,  50,  45,  40
 	;   hp  atk  def  spd  spc
@@ -19,4 +20,5 @@
 	     BIDE,         REST,         PSYWAVE,      SUBSTITUTE
 	; end
 
-	db 0 ; padding
+	db BANK(VenonatPicFront)
+	assert BANK(VenonatPicFront) == BANK(VenonatPicBack)
