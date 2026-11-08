@@ -1728,7 +1728,7 @@ SECTION "Party Data", WRAM0
 wPartyDataStart::
 
 wPartyCount:: db
-wPartySpecies:: ds PARTY_LENGTH * 2 + 1
+wPartySpecies:: ds PARTY_LENGTH * SPECIES_ID_LENGTH + SPECIES_ID_LENGTH
 
 wPartyMons::
 ; wPartyMon1 - wPartyMon6
@@ -1839,7 +1839,7 @@ wWarpEntries:: ds MAX_WARP_EVENTS * 4 ; Y, X, warp ID, map ID
 ; if $ff, the player's coordinates are not updated when entering the map
 wDestinationWarpID:: db
 
-	ds 87
+	ds 66
 
 ; number of signs in the current map (up to MAX_BG_EVENTS)
 wNumSigns:: db
@@ -2160,10 +2160,10 @@ wLinkEnemyTrainerName:: ds NAME_LENGTH
 
 wSerialEnemyDataBlock:: ; ds $1a8
 
-	ds 3
+	ds 2
 
 wEnemyPartyCount:: db
-wEnemyPartySpecies:: ds PARTY_LENGTH * 2 + 1
+wEnemyPartySpecies:: ds PARTY_LENGTH * SPECIES_ID_LENGTH + SPECIES_ID_LENGTH
 
 wEnemyMons::
 ; wEnemyMon1 - wEnemyMon6
@@ -2234,7 +2234,7 @@ SECTION "Current Box Data", WRAM0
 wBoxDataStart::
 
 wBoxCount:: db
-wBoxSpecies:: ds MONS_PER_BOX + 2
+wBoxSpecies:: ds MONS_PER_BOX * SPECIES_ID_LENGTH + SPECIES_ID_LENGTH
 
 wBoxMons::
 ; wBoxMon1 - wBoxMon20
