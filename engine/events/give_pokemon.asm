@@ -116,7 +116,7 @@ SetPokedexOwnedFlag:
 .check4
 	cp 4
 	jr nz, .check3
-	set 3, [hl]
+	set 4, [hl]
 	ret
 .check3
 	cp 3
