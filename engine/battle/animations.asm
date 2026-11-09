@@ -1372,8 +1372,12 @@ AnimationFlashMonPic:
 ; Flashes the mon's sprite on and off
 	ld a, [wBattleMonSpecies]
 	ld [wChangeMonPicPlayerTurnSpecies], a
+	ld a, [wBattleMonSpecies + 1]
+	ld [wChangeMonPicPlayerTurnSpecies + 1], a
 	ld a, [wEnemyMonSpecies]
 	ld [wChangeMonPicEnemyTurnSpecies], a
+	ld a, [wEnemyMonSpecies + 1]
+	ld [wChangeMonPicEnemyTurnSpecies + 1], a
 	jp ChangeMonPic
 
 AnimationFlashEnemyMonPic:
@@ -2017,8 +2021,12 @@ AnimationTransformMon:
 ; Used in Transform.
 	ld a, [wEnemyMonSpecies]
 	ld [wChangeMonPicPlayerTurnSpecies], a
+	ld a, [wEnemyMonSpecies + 1]
+	ld [wChangeMonPicPlayerTurnSpecies + 1], a
 	ld a, [wBattleMonSpecies]
 	ld [wChangeMonPicEnemyTurnSpecies], a
+	ld a, [wBattleMonSpecies + 1]
+	ld [wChangeMonPicEnemyTurnSpecies + 1], a
 
 ChangeMonPic:
 	ldh a, [hWhoseTurn]
@@ -2039,6 +2047,8 @@ ChangeMonPic:
 .playerTurn
 	ld a, [wBattleMonSpecies2]
 	push af
+	ld a, [wBattleMonSpecies2 + 1]
+	push af
 	ld a, [wChangeMonPicPlayerTurnSpecies]
 	ld [wBattleMonSpecies2], a
 	ld [wCurSpecies], a
@@ -2051,6 +2061,8 @@ ChangeMonPic:
 	call GetTileIDList
 	call GetMonSpriteTileMapPointerFromRowCount
 	call CopyPicTiles
+	pop af
+	ld [wBattleMonSpecies2 + 1], a
 	pop af
 	ld [wBattleMonSpecies2], a
 .done
