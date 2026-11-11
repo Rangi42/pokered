@@ -5,7 +5,10 @@ ShowPokedexMenu:
 	ld a, [wListScrollOffset]
 	push af
 	xor a
+	ld [wCurrentMenuItem], a
 	ld [wListScrollOffset], a
+	ld [wListScrollOffsetDex], a
+	ld [wListScrollOffsetDex + 1], a
 	ld [wLastMenuItem], a
 	ld [wPokedexNum + 1], a
 	inc a
