@@ -303,7 +303,10 @@ TitleScreenPickNewMon:
 	jr z, .loop
 
 .done
-	ld [hl], a
+	ld a, c
+	ld [wTitleMonSpecies], a
+	ld a, b
+	ld [wTitleMonSpecies + 1], a
 	call LoadTitleMonSprite
 
 	ld a, $90
