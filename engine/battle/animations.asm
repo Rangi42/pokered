@@ -828,18 +828,6 @@ DoBlizzardSpecialEffects:
 	jp z, AnimationFlashScreen
 	ret
 
-; flashes the screen at 3 points in the subanimation
-; unused
-FlashScreenUnused:
-	ld a, [wSubAnimCounter]
-	cp 14
-	jp z, AnimationFlashScreen
-	cp 9
-	jp z, AnimationFlashScreen
-	cp 2
-	jp z, AnimationFlashScreen
-	ret
-
 ; function to make the pokemon disappear at the beginning of the animation
 TradeHidePokemon:
 	ld a, [wSubAnimCounter]
@@ -1055,30 +1043,15 @@ AnimationDarkenMonPalette:
 	lb bc, $f9, $f4
 	jr SetAnimationBGPalette
 
-AnimationUnusedPalette1:
-	lb bc, $fe, $f8
-	jr SetAnimationBGPalette
-
-AnimationUnusedPalette2:
-	lb bc, $ff, $ff
-	jr SetAnimationBGPalette
-
 AnimationResetScreenPalette:
 ; Restores the screen's palette to the normal palette.
 	lb bc, $e4, $e4
-	jr SetAnimationBGPalette
-
-AnimationUnusedPalette3:
-	lb bc, $00, $00
 	jr SetAnimationBGPalette
 
 AnimationLightScreenPalette:
 ; Changes the screen to use a palette with light colors.
 	lb bc, $90, $90
 	jr SetAnimationBGPalette
-
-AnimationUnusedPalette4:
-	lb bc, $40, $40
 
 SetAnimationBGPalette:
 	ld a, [wOnSGB]
@@ -1089,10 +1062,6 @@ SetAnimationBGPalette:
 .next
 	ldh [rBGP], a
 	ret
-
-AnimationUnusedShakeScreen: ; unreferenced
-; Shakes the screen for a while.
-	ld b, $5
 
 AnimationShakeScreenVertically:
 	predef_jump PredefShakeScreenVertically
