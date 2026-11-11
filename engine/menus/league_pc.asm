@@ -66,7 +66,11 @@ LeaguePCShowTeam:
 	pop bc
 	ld a, [wHallOfFame + 0]
 	cp $ff
+	jr nz, .continue
+	ld a, [wHallOfFame + 1]
+	cp $ff
 	jr z, .done
+.continue
 	dec c
 	jr nz, .loop
 .done
