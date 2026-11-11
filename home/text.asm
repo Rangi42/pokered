@@ -337,6 +337,8 @@ NextTextCommand::
 	push hl
 	cp TX_FAR
 	jp z, TextCommand_FAR
+	cp TX_SOUND_CRY
+	jp z, TextCommand_SOUND_CRY
 	cp TX_SOUND_POKEDEX_RATING
 	jp nc, TextCommand_SOUND
 	ld hl, TextCommandJumpTable
@@ -503,6 +505,21 @@ TextCommand_PAUSE::
 	pop hl
 	jp NextTextCommand
 
+TextCommand_SOUND_CRY::
+	pop hl
+	push bc
+	push de
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	push hl
+	call PlayCry
+	pop hl
+	pop de
+	pop bc
+	jp NextTextCommand
+
 TextCommand_SOUND::
 ; play a sound effect from TextCommandSounds
 	pop hl
@@ -520,24 +537,9 @@ TextCommand_SOUND::
 	jr .loop
 
 .play
-	cp TX_SOUND_CRY_NIDORINA
-	jr z, .pokemonCry
-	cp TX_SOUND_CRY_PIDGEOT
-	jr z, .pokemonCry
-	cp TX_SOUND_CRY_DEWGONG
-	jr z, .pokemonCry
 	ld a, [hl]
 	call PlaySound
 	call WaitForSoundToFinish
-	pop hl
-	pop bc
-	jp NextTextCommand
-
-.pokemonCry
-	push de
-	ld a, [hl]
-	call PlayCry
-	pop de
 	pop hl
 	pop bc
 	jp NextTextCommand
@@ -550,9 +552,6 @@ TextCommandSounds::
 	db TX_SOUND_GET_ITEM_2,           SFX_GET_ITEM_2
 	db TX_SOUND_GET_KEY_ITEM,         SFX_GET_KEY_ITEM
 	db TX_SOUND_DEX_PAGE_ADDED,       SFX_DEX_PAGE_ADDED
-	db TX_SOUND_CRY_NIDORINA,         NIDORINA ; used in OakSpeech
-	db TX_SOUND_CRY_PIDGEOT,          PIDGEOT  ; used in SaffronCityPidgeotText
-	db TX_SOUND_CRY_DEWGONG,          DEWGONG  ; unused
 
 TextCommand_DOTS::
 ; wait for button press or 30 frames while printing "…"s
