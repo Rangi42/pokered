@@ -222,3 +222,19 @@ ENDM
 .inc
 	inc hl
 	ret
+
+PrintDexNumber::
+; Converts the value at wPokedexNum to big-endian, prints it, and restores the original order.
+	call .swapBytes
+	ld de, wPokedexNum
+	lb bc, LEADING_ZEROES | 2, NUM_DEX_DIGITS
+	call PrintNumber
+	; fall through to restore original order
+.swapBytes:
+	ld a, [wPokedexNum]
+	ld b, a
+	ld a, [wPokedexNum + 1]
+	ld [wPokedexNum], a
+	ld a, b
+	ld [wPokedexNum + 1], a
+	ret
