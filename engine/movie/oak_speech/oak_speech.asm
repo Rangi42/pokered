@@ -175,7 +175,7 @@ OakSpeechText1:
 OakSpeechText2:
 	text_far _OakSpeechText2A
 	; BUG: The cry played does not match the sprite displayed.
-	sound_cry_nidorina
+	sound_cry NIDORINA
 	text_far _OakSpeechText2B
 	text_end
 

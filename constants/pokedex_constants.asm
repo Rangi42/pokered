@@ -157,3 +157,5 @@
 	const DEX_MEW        ; 151
 
 DEF NUM_POKEMON EQU const_value - 1
+
+DEF NUM_DEX_DIGITS EQU STRLEN("{d:NUM_POKEMON}")

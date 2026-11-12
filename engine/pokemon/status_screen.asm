@@ -144,9 +144,7 @@ StatusScreen:
 	ld [wCurSpecies + 1], a
 	predef IndexToPokedex
 	hlcoord 3, 7
-	ld de, wPokedexNum
-	lb bc, LEADING_ZEROES | 1, 3
-	call PrintNumber ; Pokémon no.
+	call PrintDexNumber ; Pokémon no.
 	hlcoord 11, 10
 	predef PrintMonType
 	ld hl, NamePointers2

@@ -6,7 +6,12 @@ HealParty:
 .healmon
 	ld a, [hli]
 	cp $ff
+	jr nz, .startHeal
+	ld a, [hl]
+	cp $ff
 	jr z, .done
+.startHeal
+	inc hl ; skip second id byte
 
 	push hl
 	push de

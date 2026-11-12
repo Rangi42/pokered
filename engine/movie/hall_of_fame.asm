@@ -87,7 +87,9 @@ AnimateHallOfFame:
 	ld hl, wHallOfFame
 	ld bc, HOF_MON
 	call AddNTimes
-	ld [hl], $ff
+	ld a, $ff
+	ld [hli], a
+	ld [hl], a
 	call SaveHallOfFameTeams
 	xor a
 	ld [wHoFMonSpecies], a
@@ -292,6 +294,8 @@ HoFRecordMonInfo:
 	ld a, [wHoFPartyMonIndex]
 	call AddNTimes
 	ld a, [wHoFMonSpecies]
+	ld [hli], a
+	ld a, [wHoFMonSpecies + 1]
 	ld [hli], a
 	ld a, [wHoFMonLevel]
 	ld [hli], a

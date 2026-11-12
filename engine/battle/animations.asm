@@ -828,18 +828,6 @@ DoBlizzardSpecialEffects:
 	jp z, AnimationFlashScreen
 	ret
 
-; flashes the screen at 3 points in the subanimation
-; unused
-FlashScreenUnused:
-	ld a, [wSubAnimCounter]
-	cp 14
-	jp z, AnimationFlashScreen
-	cp 9
-	jp z, AnimationFlashScreen
-	cp 2
-	jp z, AnimationFlashScreen
-	ret
-
 ; function to make the pokemon disappear at the beginning of the animation
 TradeHidePokemon:
 	ld a, [wSubAnimCounter]
@@ -1055,30 +1043,15 @@ AnimationDarkenMonPalette:
 	lb bc, $f9, $f4
 	jr SetAnimationBGPalette
 
-AnimationUnusedPalette1:
-	lb bc, $fe, $f8
-	jr SetAnimationBGPalette
-
-AnimationUnusedPalette2:
-	lb bc, $ff, $ff
-	jr SetAnimationBGPalette
-
 AnimationResetScreenPalette:
 ; Restores the screen's palette to the normal palette.
 	lb bc, $e4, $e4
-	jr SetAnimationBGPalette
-
-AnimationUnusedPalette3:
-	lb bc, $00, $00
 	jr SetAnimationBGPalette
 
 AnimationLightScreenPalette:
 ; Changes the screen to use a palette with light colors.
 	lb bc, $90, $90
 	jr SetAnimationBGPalette
-
-AnimationUnusedPalette4:
-	lb bc, $40, $40
 
 SetAnimationBGPalette:
 	ld a, [wOnSGB]
@@ -1089,10 +1062,6 @@ SetAnimationBGPalette:
 .next
 	ldh [rBGP], a
 	ret
-
-AnimationUnusedShakeScreen: ; unreferenced
-; Shakes the screen for a while.
-	ld b, $5
 
 AnimationShakeScreenVertically:
 	predef_jump PredefShakeScreenVertically
@@ -1372,8 +1341,12 @@ AnimationFlashMonPic:
 ; Flashes the mon's sprite on and off
 	ld a, [wBattleMonSpecies]
 	ld [wChangeMonPicPlayerTurnSpecies], a
+	ld a, [wBattleMonSpecies + 1]
+	ld [wChangeMonPicPlayerTurnSpecies + 1], a
 	ld a, [wEnemyMonSpecies]
 	ld [wChangeMonPicEnemyTurnSpecies], a
+	ld a, [wEnemyMonSpecies + 1]
+	ld [wChangeMonPicEnemyTurnSpecies + 1], a
 	jp ChangeMonPic
 
 AnimationFlashEnemyMonPic:
@@ -2017,8 +1990,12 @@ AnimationTransformMon:
 ; Used in Transform.
 	ld a, [wEnemyMonSpecies]
 	ld [wChangeMonPicPlayerTurnSpecies], a
+	ld a, [wEnemyMonSpecies + 1]
+	ld [wChangeMonPicPlayerTurnSpecies + 1], a
 	ld a, [wBattleMonSpecies]
 	ld [wChangeMonPicEnemyTurnSpecies], a
+	ld a, [wBattleMonSpecies + 1]
+	ld [wChangeMonPicEnemyTurnSpecies + 1], a
 
 ChangeMonPic:
 	ldh a, [hWhoseTurn]
@@ -2039,6 +2016,8 @@ ChangeMonPic:
 .playerTurn
 	ld a, [wBattleMonSpecies2]
 	push af
+	ld a, [wBattleMonSpecies2 + 1]
+	push af
 	ld a, [wChangeMonPicPlayerTurnSpecies]
 	ld [wBattleMonSpecies2], a
 	ld [wCurSpecies], a
@@ -2051,6 +2030,8 @@ ChangeMonPic:
 	call GetTileIDList
 	call GetMonSpriteTileMapPointerFromRowCount
 	call CopyPicTiles
+	pop af
+	ld [wBattleMonSpecies2 + 1], a
 	pop af
 	ld [wBattleMonSpecies2], a
 .done

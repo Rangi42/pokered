@@ -107,7 +107,7 @@ Set16BitFlag:
 .check4
 	cp 4
 	jr nz, .check3
-	set 3, [hl]
+	set 4, [hl]
 	ret
 .check3
 	cp 3
@@ -165,7 +165,7 @@ Test16BitFlag:
 .check4
 	cp 4
 	jr nz, .check3
-	bit 3, [hl]
+	bit 4, [hl]
 	jr .end
 .check3
 	cp 3
