@@ -371,7 +371,7 @@ NEXTU
 wTrainerCardBlkPacket:: ds $40
 
 NEXTU
-wHallOfFame:: ds HOF_TEAM + SPECIES_ID_LENGTH
+wHallOfFame:: ds HOF_TEAM + 2
 
 NEXTU
 wNPCMovementDirections:: ds 180
@@ -1728,7 +1728,7 @@ SECTION "Party Data", WRAM0
 wPartyDataStart::
 
 wPartyCount:: db
-wPartySpecies:: ds PARTY_LENGTH * SPECIES_ID_LENGTH + SPECIES_ID_LENGTH
+wPartySpecies:: ds PARTY_LENGTH * 2 + 2
 
 wPartyMons::
 ; wPartyMon1 - wPartyMon6
@@ -2163,7 +2163,7 @@ wSerialEnemyDataBlock:: ; ds $1a8
 	ds 2
 
 wEnemyPartyCount:: db
-wEnemyPartySpecies:: ds PARTY_LENGTH * SPECIES_ID_LENGTH + SPECIES_ID_LENGTH
+wEnemyPartySpecies:: ds PARTY_LENGTH * 2 + 2
 
 wEnemyMons::
 ; wEnemyMon1 - wEnemyMon6
@@ -2234,7 +2234,7 @@ SECTION "Current Box Data", WRAM0
 wBoxDataStart::
 
 wBoxCount:: db
-wBoxSpecies:: ds MONS_PER_BOX * SPECIES_ID_LENGTH + SPECIES_ID_LENGTH
+wBoxSpecies:: ds MONS_PER_BOX * 2 + 2
 
 wBoxMons::
 ; wBoxMon1 - wBoxMon20

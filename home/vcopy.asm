@@ -20,10 +20,7 @@ GetRowColAddressBgMap::
 ; INPUT: h - high byte of background tile map address in VRAM
 ClearBgMap::
 	ld a, ' '
-	jr FillBgMapCommon
 
-; fills a VRAM background map with tile index in register l
-; INPUT: h - high byte of background tile map address in VRAM
 FillBgMapCommon:
 	ld de, TILEMAP_AREA
 	ld l, e
