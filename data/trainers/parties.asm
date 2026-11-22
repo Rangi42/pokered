@@ -64,7 +64,7 @@ MACRO dparty2
 		dbw \1, \2 ; every next two bytes are a level and species
 		shift 2
 	ENDR
-	dw 0 ; null-terminated
+	db 0 ; null-terminated
 ENDM
 
 YoungsterData:
