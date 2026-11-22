@@ -1,8 +1,8 @@
 PlayPokedexRatingSfx::
 	ldh a, [hDexRatingNumMonsOwned]
-	ld e, a
-	ldh a, [hDexRatingNumMonsOwned + 1]
 	ld d, a
+	ldh a, [hDexRatingNumMonsOwned + 1]
+	ld e, a
 	ld c, $0
 	ld hl, OwnedMonValues
 .getSfxPointer
@@ -43,4 +43,4 @@ PokedexRatingSfxPointers:
 	db SFX_GET_ITEM_2,     BANK(SFX_Get_Item2_1)
 
 OwnedMonValues:
-	bigdw 10, 40, 60, 90, 120, 150, $ff
+	bigdw 10, 40, 60, 90, 120, 150, $ffff

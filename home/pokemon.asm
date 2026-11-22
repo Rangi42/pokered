@@ -119,6 +119,7 @@ LoadFrontSpriteByMonIndex::
 	ld a, d
 	cp HIGH(NUM_POKEMON + 1)
 	jr c, .validDexNumber
+	jr nz, .invalidDexNumber
 	ld a, e
 	cp LOW(NUM_POKEMON + 1)
 	jr c, .validDexNumber   ; dex >#151 invalid

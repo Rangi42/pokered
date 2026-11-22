@@ -5,7 +5,10 @@ ShowPokedexMenu:
 	ld a, [wListScrollOffset]
 	push af
 	xor a
+	ld [wCurrentMenuItem], a
 	ld [wListScrollOffset], a
+	ld [wListScrollOffsetDex], a
+	ld [wListScrollOffsetDex + 1], a
 	ld [wLastMenuItem], a
 	ld [wPokedexNum + 1], a
 	inc a
@@ -274,23 +277,15 @@ HandlePokedexListMenu:
 	ld b, a
 	inc bc
 	ld a, c
-	ld [wPokedexNum + 1], a
-	ld a, b
 	ld [wPokedexNum], a
+	ld a, b
+	ld [wPokedexNum + 1], a
 	push bc
 	push de
 	push hl
 	ld de, -SCREEN_WIDTH
 	add hl, de
-	ld de, wPokedexNum
-	lb bc, LEADING_ZEROES | 2, 3
-	call PrintNumber
-	ld a, [wPokedexNum]
-	ld d, a
-	ld a, [wPokedexNum + 1]
-	ld [wPokedexNum], a
-	ld a, d
-	ld [wPokedexNum + 1], a
+	call PrintDexNumber
 	ld de, SCREEN_WIDTH
 	add hl, de
 	dec hl
@@ -612,21 +607,7 @@ ShowPokedexDataInternal:
 	ld [hli], a
 	ld a, '<DOT>'
 	ld [hli], a
-	ld a, [wPokedexNum]
-	ld d, a
-	ld a, [wPokedexNum + 1]
-	ld [wPokedexNum], a
-	ld a, d
-	ld [wPokedexNum + 1], a
-	ld de, wPokedexNum
-	lb bc, LEADING_ZEROES | 2, 3
-	call PrintNumber ; print pokedex number
-	ld a, [wPokedexNum]
-	ld d, a
-	ld a, [wPokedexNum + 1]
-	ld [wPokedexNum], a
-	ld a, d
-	ld [wPokedexNum + 1], a
+	call PrintDexNumber
 
 	ld hl, wPokedexOwned
 	call IsPokemonBitSet
