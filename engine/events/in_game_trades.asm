@@ -201,7 +201,7 @@ InGameTrade_PrepareTradeData:
 	ld a, [wInGameTradeGiveMonSpecies + 1]
 	ld [hli], a ; wTradedPlayerMonSpecies + 1
 	ld a, [wInGameTradeReceiveMonSpecies]
-	ld [hl], a ; wTradedEnemyMonSpecies
+	ld [hli], a ; wTradedEnemyMonSpecies
 	ld a, [wInGameTradeReceiveMonSpecies + 1]
 	ld [hl], a ; wTradedEnemyMonSpecies + 1
 	ld hl, wPartyMonOT

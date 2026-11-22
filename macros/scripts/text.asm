@@ -152,22 +152,13 @@ MACRO sound_dex_page_added
 	db TX_SOUND_DEX_PAGE_ADDED
 ENDM
 
-	const TX_SOUND_CRY_NIDORINA ; $14
-MACRO sound_cry_nidorina
-	db TX_SOUND_CRY_NIDORINA
+	const TX_SOUND_CRY ; $14
+MACRO sound_cry
+	db TX_SOUND_CRY
+	dw \1
 ENDM
 
-	const TX_SOUND_CRY_PIDGEOT ; $15
-MACRO sound_cry_pidgeot
-	db TX_SOUND_CRY_PIDGEOT
-ENDM
-
-	const TX_SOUND_CRY_DEWGONG ; $16
-MACRO sound_cry_dewgong
-	db TX_SOUND_CRY_DEWGONG
-ENDM
-
-	const TX_FAR ; $17
+	const TX_FAR ; $15
 MACRO text_far
 	db TX_FAR
 	dab \1 ; address of text commands

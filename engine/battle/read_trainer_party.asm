@@ -11,7 +11,9 @@ ReadTrainer:
 	ld hl, wEnemyPartyCount
 	xor a
 	ld [hli], a
+; set [wEnemyPartySpecies] to $FFFF
 	dec a
+	ld [hli], a
 	ld [hl], a
 
 ; get the pointer to trainer data for this class
@@ -125,7 +127,6 @@ ReadTrainer:
 
 ; get trainer class number
 	ld a, [wCurOpponent]
-	dec a
 	ld b, a
 	ld hl, TeamMoves
 

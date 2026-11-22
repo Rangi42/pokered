@@ -75,7 +75,7 @@ SaffronCityGentlemanText:
 
 SaffronCityPidgeotText:
 	text_far _SaffronCityPidgeotText
-	sound_cry_pidgeot
+	sound_cry PIDGEOT
 	text_end
 
 SaffronCityRockerText:

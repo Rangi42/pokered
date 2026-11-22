@@ -4,11 +4,11 @@ Trade_PrintPlayerMonInfoText:
 	call PlaceString
 	ld a, [wTradedPlayerMonSpecies]
 	ld [wPokedexNum], a
+	ld a, [wTradedPlayerMonSpecies + 1]
+	ld [wPokedexNum + 1], a
 	predef IndexToPokedex
 	hlcoord 9, 0
-	ld de, wPokedexNum
-	lb bc, LEADING_ZEROES | 1, 3
-	call PrintNumber
+	call PrintDexNumber
 	hlcoord 5, 2
 	ld de, wStringBuffer
 	call PlaceString
@@ -26,11 +26,11 @@ Trade_PrintEnemyMonInfoText:
 	call PlaceString
 	ld a, [wTradedEnemyMonSpecies]
 	ld [wPokedexNum], a
+	ld a, [wTradedEnemyMonSpecies + 1]
+	ld [wPokedexNum + 1], a
 	predef IndexToPokedex
 	hlcoord 9, 10
-	ld de, wPokedexNum
-	lb bc, LEADING_ZEROES | 1, 3
-	call PrintNumber
+	call PrintDexNumber
 	hlcoord 5, 12
 	ld de, wNameBuffer
 	call PlaceString
