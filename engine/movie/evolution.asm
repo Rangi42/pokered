@@ -4,7 +4,11 @@ EvolveMon:
 	push bc
 	ld a, [wCurPartySpecies]
 	push af
+	ld a, [wCurPartySpecies + 1]
+	push af
 	ld a, [wCurSpecies]
+	push af
+	ld a, [wCurSpecies + 1]
 	push af
 	xor a
 	ld [wLowHealthAlarm], a
@@ -95,7 +99,11 @@ EvolveMon:
 	ld c, 0
 	call EvolutionSetWholeScreenPalette
 	pop af
+	ld [wCurSpecies + 1], a
+	pop af
 	ld [wCurSpecies], a
+	pop af
+	ld [wCurPartySpecies + 1], a
 	pop af
 	ld [wCurPartySpecies], a
 	pop bc
