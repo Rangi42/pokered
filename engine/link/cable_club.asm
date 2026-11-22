@@ -131,7 +131,7 @@ CableClub_DoBattleOrTradeAgain:
 	ld [de], a
 	ld hl, wSerialPlayerDataBlock
 	ld de, wSerialEnemyDataBlock
-	ld bc, SERIAL_PREAMBLE_LENGTH + NAME_LENGTH + 1 + PARTY_LENGTH + 1 + (PARTYMON_STRUCT_LENGTH + NAME_LENGTH * 2) * PARTY_LENGTH + 3
+	ld bc, SERIAL_PREAMBLE_LENGTH + NAME_LENGTH + 1 + PARTY_LENGTH * 2 + 2 + (PARTYMON_STRUCT_LENGTH + NAME_LENGTH * 2) * PARTY_LENGTH + 3
 	vc_hook Wireless_ExchangeBytes_party_structs
 	call Serial_ExchangeBytes
 	ld a, SERIAL_NO_DATA_BYTE
@@ -661,9 +661,16 @@ TradeCenter_PrintPartyListNames:
 	ld c, $0
 .loop
 	ld a, [de]
+	ld [wNamedObjectIndex], a
+	inc de
+	ld a, [de]
+	ld [wNamedObjectIndex + 1], a
+	cp $ff
+	jr nz, .printName
+	ld a, [wNamedObjectIndex]
 	cp $ff
 	ret z
-	ld [wNamedObjectIndex], a
+.printName
 	push bc
 	push hl
 	push de
@@ -696,11 +703,14 @@ TradeCenter_Trade:
 	call CableClub_TextBoxBorder
 	ld a, [wTradingWhichPlayerMon]
 	ld hl, wPartySpecies
+	add a
 	ld c, a
 	ld b, 0
 	add hl, bc
-	ld a, [hl]
+	ld a, [hli]
 	ld [wNamedObjectIndex], a
+	ld a, [hl]
+	ld [wNamedObjectIndex + 1], a
 	call GetMonName
 	ld hl, wNameBuffer
 	ld de, wNameOfPlayerMonToBeTraded
@@ -708,11 +718,14 @@ TradeCenter_Trade:
 	call CopyData
 	ld a, [wTradingWhichEnemyMon]
 	ld hl, wEnemyPartySpecies
+	add a
 	ld c, a
 	ld b, 0
 	add hl, bc
-	ld a, [hl]
+	ld a, [hli]
 	ld [wNamedObjectIndex], a
+	ld a, [hl]
+	ld [wNamedObjectIndex + 1], a
 	call GetMonName
 	ld hl, WillBeTradedText
 	bccoord 1, 14
@@ -793,11 +806,14 @@ TradeCenter_Trade:
 	ld a, [wTradingWhichPlayerMon]
 	ld [wWhichPokemon], a
 	ld hl, wPartySpecies
+	add a
 	ld b, 0
 	ld c, a
 	add hl, bc
-	ld a, [hl]
+	ld a, [hli]
 	ld [wTradedPlayerMonSpecies], a
+	ld a, [hl]
+	ld [wTradedPlayerMonSpecies + 1], a
 	xor a
 	ld [wRemoveMonFromBox], a
 	call RemovePokemon
@@ -805,11 +821,14 @@ TradeCenter_Trade:
 	ld c, a
 	ld [wWhichPokemon], a
 	ld hl, wEnemyPartySpecies
+	add a
 	ld d, 0
 	ld e, a
 	add hl, de
-	ld a, [hl]
+	ld a, [hli]
 	ld [wCurPartySpecies], a
+	ld a, [hl]
+	ld [wCurPartySpecies + 1], a
 	ld hl, wEnemyMons
 	ld a, c
 	ld bc, PARTYMON_STRUCT_LENGTH
@@ -825,11 +844,14 @@ TradeCenter_Trade:
 	ld [wForceEvolution], a
 	ld a, [wTradingWhichEnemyMon]
 	ld hl, wEnemyPartySpecies
+	add a
 	ld b, 0
 	ld c, a
 	add hl, bc
-	ld a, [hl]
+	ld a, [hli]
 	ld [wTradedEnemyMonSpecies], a
+	ld a, [hl]
+	ld [wTradedEnemyMonSpecies + 1], a
 	ld a, 10
 	ld [wAudioFadeOutControl], a
 	ld a, BANK(Music_SafariZone)
