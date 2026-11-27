@@ -52,7 +52,7 @@ CableClub_DoBattleOrTradeAgain:
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
-	ld b, $c8
+	ld b, 200 - 3
 	xor a
 .zeroPlayerDataPatchListLoop
 	ld [hli], a
@@ -67,7 +67,7 @@ CableClub_DoBattleOrTradeAgain:
 	ld a, b
 	or c
 	jr nz, .zeroEnemyPartyLoop
-	ld hl, wPartyMons - 1
+	ld hl, wPartySpecies - 1
 	ld de, wSerialPartyMonsPatchList + 10
 	ld bc, 0
 .patchPartyMonsLoop
@@ -80,7 +80,7 @@ CableClub_DoBattleOrTradeAgain:
 	jr nz, .checkPlayerDataByte ; jump if in part 1
 ; if we're in part 2
 	ld a, c
-	cp (wPartyMonOT - (wPartyMons - 1)) - (SERIAL_PREAMBLE_BYTE - 1)
+	cp (wPartyMonOT - (wPartySpecies - 1)) - (SERIAL_PREAMBLE_BYTE - 1)
 	jr z, .finishedPatchingPlayerData
 .checkPlayerDataByte
 	inc hl
@@ -131,7 +131,7 @@ CableClub_DoBattleOrTradeAgain:
 	ld [de], a
 	ld hl, wSerialPlayerDataBlock
 	ld de, wSerialEnemyDataBlock
-	ld bc, SERIAL_PREAMBLE_LENGTH + NAME_LENGTH + 1 + PARTY_LENGTH + 1 + (PARTYMON_STRUCT_LENGTH + NAME_LENGTH * 2) * PARTY_LENGTH + 3
+	ld bc, SERIAL_PREAMBLE_LENGTH + NAME_LENGTH + 1 + PARTY_LENGTH * 2 + 2 + (PARTYMON_STRUCT_LENGTH + NAME_LENGTH * 2) * PARTY_LENGTH + 3
 	vc_hook Wireless_ExchangeBytes_party_structs
 	call Serial_ExchangeBytes
 	ld a, SERIAL_NO_DATA_BYTE
@@ -202,7 +202,7 @@ CableClub_DoBattleOrTradeAgain:
 	or c
 	jr nz, .copyEnemyPartyLoop
 	ld de, wSerialPartyMonsPatchList
-	ld hl, wPartyMons
+	ld hl, wPartySpecies
 	ld c, 2 ; patch list has 2 parts
 .unpatchPartyMonsLoop
 	ld a, [de]
@@ -227,11 +227,11 @@ CableClub_DoBattleOrTradeAgain:
 	pop hl
 	jr .unpatchPartyMonsLoop
 .finishedPartyMonsPatchListPart
-	ld hl, wPartyMons + (SERIAL_PREAMBLE_BYTE - 1)
+	ld hl, wPartySpecies + (SERIAL_PREAMBLE_BYTE - 1)
 	dec c ; is there another part?
 	jr nz, .unpatchPartyMonsLoop
 	ld de, wSerialEnemyMonsPatchList
-	ld hl, wEnemyMons
+	ld hl, wEnemyPartySpecies
 	ld c, 2 ; patch list has 2 parts
 .unpatchEnemyMonsLoop
 	ld a, [de]
@@ -256,7 +256,7 @@ CableClub_DoBattleOrTradeAgain:
 	pop hl
 	jr .unpatchEnemyMonsLoop
 .finishedEnemyMonsPatchListPart
-	ld hl, wEnemyMons + (SERIAL_PREAMBLE_BYTE - 1)
+	ld hl, wEnemyPartySpecies + (SERIAL_PREAMBLE_BYTE - 1)
 	dec c
 	jr nz, .unpatchEnemyMonsLoop
 	ld a, LOW(wEnemyMonOT)
@@ -661,9 +661,16 @@ TradeCenter_PrintPartyListNames:
 	ld c, $0
 .loop
 	ld a, [de]
+	ld [wNamedObjectIndex], a
+	inc de
+	ld a, [de]
+	ld [wNamedObjectIndex + 1], a
+	cp $ff
+	jr nz, .printName
+	ld a, [wNamedObjectIndex]
 	cp $ff
 	ret z
-	ld [wNamedObjectIndex], a
+.printName
 	push bc
 	push hl
 	push de
@@ -696,11 +703,14 @@ TradeCenter_Trade:
 	call CableClub_TextBoxBorder
 	ld a, [wTradingWhichPlayerMon]
 	ld hl, wPartySpecies
+	add a
 	ld c, a
 	ld b, 0
 	add hl, bc
-	ld a, [hl]
+	ld a, [hli]
 	ld [wNamedObjectIndex], a
+	ld a, [hl]
+	ld [wNamedObjectIndex + 1], a
 	call GetMonName
 	ld hl, wNameBuffer
 	ld de, wNameOfPlayerMonToBeTraded
@@ -708,11 +718,14 @@ TradeCenter_Trade:
 	call CopyData
 	ld a, [wTradingWhichEnemyMon]
 	ld hl, wEnemyPartySpecies
+	add a
 	ld c, a
 	ld b, 0
 	add hl, bc
-	ld a, [hl]
+	ld a, [hli]
 	ld [wNamedObjectIndex], a
+	ld a, [hl]
+	ld [wNamedObjectIndex + 1], a
 	call GetMonName
 	ld hl, WillBeTradedText
 	bccoord 1, 14
@@ -793,11 +806,14 @@ TradeCenter_Trade:
 	ld a, [wTradingWhichPlayerMon]
 	ld [wWhichPokemon], a
 	ld hl, wPartySpecies
+	add a
 	ld b, 0
 	ld c, a
 	add hl, bc
-	ld a, [hl]
+	ld a, [hli]
 	ld [wTradedPlayerMonSpecies], a
+	ld a, [hl]
+	ld [wTradedPlayerMonSpecies + 1], a
 	xor a
 	ld [wRemoveMonFromBox], a
 	call RemovePokemon
@@ -805,11 +821,14 @@ TradeCenter_Trade:
 	ld c, a
 	ld [wWhichPokemon], a
 	ld hl, wEnemyPartySpecies
+	add a
 	ld d, 0
 	ld e, a
 	add hl, de
-	ld a, [hl]
+	ld a, [hli]
 	ld [wCurPartySpecies], a
+	ld a, [hl]
+	ld [wCurPartySpecies + 1], a
 	ld hl, wEnemyMons
 	ld a, c
 	ld bc, PARTYMON_STRUCT_LENGTH
@@ -825,11 +844,14 @@ TradeCenter_Trade:
 	ld [wForceEvolution], a
 	ld a, [wTradingWhichEnemyMon]
 	ld hl, wEnemyPartySpecies
+	add a
 	ld b, 0
 	ld c, a
 	add hl, bc
-	ld a, [hl]
+	ld a, [hli]
 	ld [wTradedEnemyMonSpecies], a
+	ld a, [hl]
+	ld [wTradedEnemyMonSpecies + 1], a
 	ld a, 10
 	ld [wAudioFadeOutControl], a
 	ld a, BANK(Music_SafariZone)

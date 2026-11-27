@@ -627,8 +627,7 @@ wTradedEnemyMonOT:: ds NAME_LENGTH
 wTradedEnemyMonOTID:: dw
 
 NEXTU
-wTradingWhichPlayerMon:: db
-wTradingWhichEnemyMon:: db
+	ds 2
 wNameOfPlayerMonToBeTraded:: ds NAME_LENGTH
 
 NEXTU
@@ -877,7 +876,10 @@ wRightGBMonSpecies:: dw
 
 wMiscFlags:: db
 
-	ds 6
+; Party selections must survive writes to the traded species and OT data.
+wTradingWhichPlayerMon:: db
+wTradingWhichEnemyMon:: db
+	ds 4
 
 ; This has overlapping related uses.
 ; When the player tries to use an item or use certain field moves, 0 is stored
