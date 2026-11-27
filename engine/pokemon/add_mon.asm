@@ -302,7 +302,8 @@ _AddEnemyMonToPlayerParty::
 	scf
 	ret z            ; party full, return failure
 	inc a
-	ld [hl], a       ; add 1 to party members
+	ld [hli], a      ; add 1 to party members, hl = wPartySpecies
+	dec a            ; zero-based index of the new party member
 	ld c, a
 	ld b, $0
 	add hl, bc
@@ -311,7 +312,9 @@ _AddEnemyMonToPlayerParty::
 	ld [hli], a      ; add mon as last list entry
 	ld a, [wCurPartySpecies + 1]
 	ld [hli], a
-	ld [hl], $ff     ; write new sentinel
+	ld a, $ff        ; write the two-byte sentinel
+	ld [hli], a
+	ld [hl], a
 	ld hl, wPartyMons
 	ld a, [wPartyCount]
 	dec a

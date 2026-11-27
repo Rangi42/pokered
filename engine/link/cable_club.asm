@@ -52,7 +52,7 @@ CableClub_DoBattleOrTradeAgain:
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
-	ld b, $c8
+	ld b, 200 - 3
 	xor a
 .zeroPlayerDataPatchListLoop
 	ld [hli], a
@@ -67,7 +67,7 @@ CableClub_DoBattleOrTradeAgain:
 	ld a, b
 	or c
 	jr nz, .zeroEnemyPartyLoop
-	ld hl, wPartyMons - 1
+	ld hl, wPartySpecies - 1
 	ld de, wSerialPartyMonsPatchList + 10
 	ld bc, 0
 .patchPartyMonsLoop
@@ -80,7 +80,7 @@ CableClub_DoBattleOrTradeAgain:
 	jr nz, .checkPlayerDataByte ; jump if in part 1
 ; if we're in part 2
 	ld a, c
-	cp (wPartyMonOT - (wPartyMons - 1)) - (SERIAL_PREAMBLE_BYTE - 1)
+	cp (wPartyMonOT - (wPartySpecies - 1)) - (SERIAL_PREAMBLE_BYTE - 1)
 	jr z, .finishedPatchingPlayerData
 .checkPlayerDataByte
 	inc hl
@@ -202,7 +202,7 @@ CableClub_DoBattleOrTradeAgain:
 	or c
 	jr nz, .copyEnemyPartyLoop
 	ld de, wSerialPartyMonsPatchList
-	ld hl, wPartyMons
+	ld hl, wPartySpecies
 	ld c, 2 ; patch list has 2 parts
 .unpatchPartyMonsLoop
 	ld a, [de]
@@ -227,11 +227,11 @@ CableClub_DoBattleOrTradeAgain:
 	pop hl
 	jr .unpatchPartyMonsLoop
 .finishedPartyMonsPatchListPart
-	ld hl, wPartyMons + (SERIAL_PREAMBLE_BYTE - 1)
+	ld hl, wPartySpecies + (SERIAL_PREAMBLE_BYTE - 1)
 	dec c ; is there another part?
 	jr nz, .unpatchPartyMonsLoop
 	ld de, wSerialEnemyMonsPatchList
-	ld hl, wEnemyMons
+	ld hl, wEnemyPartySpecies
 	ld c, 2 ; patch list has 2 parts
 .unpatchEnemyMonsLoop
 	ld a, [de]
@@ -256,7 +256,7 @@ CableClub_DoBattleOrTradeAgain:
 	pop hl
 	jr .unpatchEnemyMonsLoop
 .finishedEnemyMonsPatchListPart
-	ld hl, wEnemyMons + (SERIAL_PREAMBLE_BYTE - 1)
+	ld hl, wEnemyPartySpecies + (SERIAL_PREAMBLE_BYTE - 1)
 	dec c
 	jr nz, .unpatchEnemyMonsLoop
 	ld a, LOW(wEnemyMonOT)
